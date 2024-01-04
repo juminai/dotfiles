@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ $(eww get volume_rev) == false ]]; then
+  eww update volume_rev=true
+fi
+
+vol=$(eww get audio | jq .output)
+
+while true; do
+  sleep 3
+  new_vol=$(eww get audio | jq .output)
+
+  if [[ $vol != $new_vol ]]; then
+    vol=$new_vol
+  else
+    if [[ $vol == $(eww get audio | jq .output) ]]; then
+      if [[ $(eww get volume_rev) == true ]]; then
+        eww update volume_rev=false
+        exit
+      fi
+    fi
+  fi
+done

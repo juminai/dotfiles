@@ -1,0 +1,228 @@
+(defwidget profile []
+  (box
+    :class "profile-info"
+    :space-evenly false
+    :hexpand true
+	  (box  
+      :space-evenly false 
+      :orientation "v"
+      :hexpand true
+      :spacing 5
+      (label :class "name"  :text user :xalign 0)
+      (label :class "uptime" :text "  ${round(uptime, 0)} min" :xalign 0)
+    )
+    (box
+      :class "quick-power"
+      :halign "end"
+      :valign "end"
+      :spacing 10
+      (powermenu-button :command "poweroff")
+      (powermenu-button :command "exit")
+    )
+  )
+)
+
+(defwidget profile-image []
+  (box :class "image" )
+)
+
+(defwidget utils_button [icon action css wait] 
+  (eventbox 
+    :cursor "pointer"
+    (button 
+      :class css 
+      :onclick action
+      :timeout wait
+      icon
+    )
+  )
+)
+
+(defwidget utils []
+  (box 
+    :class "utils" 
+    :orientation "v" 
+    :spacing 15
+    (box  
+      :spacing 15
+      (utils_button 
+        :css "dnd ${notifications.dnd}" 
+        :icon {icons.bell[notifications.dnd]}
+        :action "scripts/notifications toggle"
+        :wait "200ms"
+      )
+      (utils_button 
+        :css "nightlight ${nightlight}"
+        :icon {icons.light[nightlight]}
+        :action "scripts/nightlight toggle"
+        :wait "200ms"
+      )
+    )
+    (box 
+      :spacing 15
+      (utils_button 
+        :css "theme ${theme}"
+        :icon ""
+        :action "scripts/theme toggle"
+        :wait "200ms"
+      )
+      (utils_button 
+        :css "powerprofile ${powerprofile}"
+        :icon {icons.power-profile[powerprofile]}
+        :action "scripts/powerprofile toggle"
+        :wait "200ms"
+      )
+    )
+  )
+)
+
+(defwidget slider [class value action icon launch ?muted]
+  (box 
+    :class class 
+    :space-evenly false
+    (eventbox 
+      :cursor "pointer"
+      :valign "center"
+      (button 
+        :class "icon ${muted}"
+        :onclick "${action} toggle"
+        icon
+      )
+    )
+    (scale
+      :class "scale"
+      :hexpand true
+      :tooltip {muted ? "Muted" : "${value}%"}
+      :value value
+      :min 0 
+      :max 101
+      :onchange "${action} set {}"
+    )
+    (eventbox 
+      :cursor "pointer"
+      :valign "center"
+      (button 
+        :class "launch" 
+        :onclick launch 
+        ""
+      )
+    )
+  )
+)
+
+(defwidget system-sliders []
+  (box 
+    :class "sliders"
+    :orientation "v"
+    (slider
+      :class "menu-volume"
+      :value {audio.output.volume}
+      :icon {icons.media[audio.output.muted]}
+      :action "volume"
+      :launch "pavucontrol &"
+      :muted {audio.output.muted}
+    )
+    (slider
+      :class "menu-mic"
+      :value {audio.input.volume}
+      :icon {icons.microphone[audio.input.muted]}
+      :action "volume mic"
+      :launch "pavucontrol &"
+      :muted {audio.input.muted}
+    )
+  )
+)
+
+(defwidget system-progress [data icon css tip] 
+  (box 
+    :class "progress" 
+    (circular-progress
+      :class css
+      :value data
+      :thickness 8
+      :tooltip tip
+      (overlay
+        :valign "center"
+        (label 
+          :class "icon" 
+          :text icon
+        )
+      )
+    )
+  )
+)
+
+(defwidget system-info []
+  (box
+    :class "system-info"
+    :orientation "v"
+    :spacing 15
+    (box
+      :spacing 15
+      (system-progress
+        :css "cpu"
+        :tip "CPU ${round(EWW_CPU.avg,0)}%"
+        :data {round(EWW_CPU.avg, 0)} 
+        :icon ""
+      )
+      (system-progress
+        :css "ram"
+        :tip "RAM ${round(EWW_RAM.used_mem / 1000000, 2)}MB"
+        :data {round(EWW_RAM.used_mem_perc, 0)}
+        :icon ""
+      )
+    )
+    (box
+      :spacing 15
+      (system-progress
+        :css "temp"
+        :tip "Temperature ${EWW_TEMPS["AMDGPU_EDGE"]}°C"
+        :data {round(EWW_TEMPS.AMDGPU_EDGE, 0)} 
+        :icon ""
+      )
+      (system-progress
+        :css "disk"
+        :tip "SSD ${round(EWW_DISK["/"].used_perc, 2)}%"
+        :data {round(EWW_DISK["/"].used_perc, 0)}
+        :icon ""
+      )
+    )
+  )
+)
+
+(defwidget menu-network []
+  (box 
+    :class "network" 
+    :space-evenly false 
+    :spacing 10
+    (label 
+      :class "icon ${network.status}"
+      :text {icons.network[network.status]}
+    )
+    (label :class "name" :text {network.name})
+    (box 
+      :halign "end" 
+      :hexpand true 
+      :spacing 10 
+      :space-evenly false
+      (box 
+        :space-evenly false 
+        :spacing 10
+        (label :text "") 
+        (label
+          :text "${round(EWW_NET[network.name].NET_DOWN / 1000000, 2)}MB" 
+          :xalign 0
+        )
+      )
+      (box 
+        :space-evenly false 
+        :spacing 10
+        (label :text "") 
+        (label 
+          :text "${round(EWW_NET[network.name].NET_UP / 1000000, 2)}MB" 
+          :xalign 0
+        )
+      )
+    )
+  )
+)

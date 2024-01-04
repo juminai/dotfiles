@@ -1,0 +1,44 @@
+.dock {
+  .widget {
+    @include floating-widget($padding: 0.5rem);
+
+    .launcher-button {
+      @include button($flat: true);
+
+      label {
+        font-size: 2rem;
+        text-shadow: $text-shadow;
+        padding: 1rem;
+      }
+    }
+
+    .indicator {
+      padding: 2px;
+      border-radius: $radius;
+
+      &.open {
+        background-color: transparentize($fg-color, 0.75);
+        margin: 2px 25px;
+      }
+
+      &.active {
+        background-color: $accent;
+        margin: 2px 20px;
+      }
+    }
+
+    .div {
+      background: transparentize($fg-color, 0.8);
+      padding: 1px;
+      border-radius: $radius;
+      margin: .5rem;
+    }
+
+    .favorite,
+    .impostor {
+      .application {
+        @include application($dock: true);
+      }
+    }
+  }
+}

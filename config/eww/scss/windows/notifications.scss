@@ -1,0 +1,9 @@
+.notifications {
+  .notification {
+    @include notification;
+    .content {
+      @include floating-widget($padding: 0);
+      min-width: 28rem;
+    }
+  }
+}

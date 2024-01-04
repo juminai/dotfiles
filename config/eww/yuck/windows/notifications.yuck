@@ -1,0 +1,18 @@
+(defwidget notifications []
+  (box 
+    :class "notifications" 
+    :space-evenly false 
+    :orientation "v"
+    (for i in "[2, 1, 0]"
+      (revealer
+        :reveal {notifications.popups[i] != "null" && !info-center_rev}
+        :transition "slidedown"
+        :duration duration
+        (notification 
+          :notification {notifications.popups[i]} 
+          :floating true
+        )
+      )
+    )
+  )
+)

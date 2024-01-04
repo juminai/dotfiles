@@ -1,0 +1,26 @@
+$assets: "assets/";
+$icons: $assets + "icons/";
+
+$avatar: $assets + "eren.jpg";
+$notification: $icons + if($theme=='light', "messages.svg", "messages-dark.svg");
+$bell: $icons + "bells.svg";
+
+$accent: $blue;
+$gaps: 8px;
+$transition: 250ms;
+$radius: 1rem;
+
+$hover: if($theme=='light', transparentize($accent, 0.7), transparentize($fg-color, 0.9));
+$hover-fg: $bg-color;
+
+$widget-bg: if($theme=='light', transparentize($fg-color, 0.86), transparentize($fg-color, 0.94));
+
+$border-color: if($theme=='light', rgba(black, 0.03), rgba(white, 0.03));
+$border-width: 1px;
+$border: $border-width solid $border-color;
+
+$shadow: rgba(black, 0.5);
+$text-shadow: 2px 2px 2px $shadow;
+
+$button-radius: $radius*0.6;
+$button-bg: if($theme=='light', transparentize($fg-color, 0.86), transparentize($fg-color, 0.94));

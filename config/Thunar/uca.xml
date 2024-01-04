@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1653152521049373-1</unique-id>
+	<command>foot -T flooat</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>com.github.maoschanz.DynamicWallpaperEditor</icon>
+	<name>Set Wallpaper</name>
+	<submenu></submenu>
+	<unique-id>1653152845925747-1</unique-id>
+	<command>swww img %n --transition-fps 75 --transition-type wipe --transition-duration 2</command>
+	<description>sww</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<image-files/>
+</action>
+<action>
+	<icon>nvim</icon>
+	<name>Open with Nvim</name>
+	<submenu></submenu>
+	<unique-id>1653154187810667-1</unique-id>
+	<command>foot -T flooat -e nvim %n</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<other-files/>
+	<text-files/>
+</action>
+</actions>

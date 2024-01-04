@@ -1,0 +1,165 @@
+.menu {
+  .widget {
+    @include floating-widget();
+
+    .profile {
+      .image {
+        background-image: url($avatar);
+        @include image($size: 6rem);
+        border-radius: $radius;
+      }
+
+      .profile-info {
+        @include widget;
+
+        .name {
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+
+        .uptime {
+          font-size: 1.1rem;
+        }
+
+        .quick-power {
+          @include powermenu-button($size: 1.5rem);
+        }
+      }
+    }
+
+    .utils {
+      @include widget;
+
+      button {
+        @include button();
+        font-size: 1.6rem;
+      }
+
+      .update {
+        font-size: 1.75rem;
+      }
+
+      .theme,
+      .nightlight,
+      .powerprofile {
+
+        &.dark,
+        &.on,
+        &.power-saver {
+          background-color: $blue;
+          color: $bg-color;
+
+          @if $theme =="light" {
+            color: $fg-color;
+          }
+        }
+      }
+
+      .dnd {
+        &.true {
+          background-color: $red;
+          color: $bg-color;
+
+          @if $theme =="light" {
+            color: $fg-color;
+          }
+        }
+
+        &.false {
+          color: $yellow;
+
+          @if $theme =="light" {
+            color: $fg-color;
+          }
+        }
+      }
+    }
+
+    .system-info {
+      .progress {
+        @include widget;
+        padding: 0.5rem;
+
+        circular-progress {
+          background-color: transparentize($fg-color, 0.9);
+
+          &.ram {
+            color: $purple;
+          }
+
+          &.cpu {
+            color: $blue;
+
+            label {
+              margin-left: 1px;
+            }
+          }
+
+          &.temp {
+            color: $red;
+
+            label {
+              margin-left: 1px;
+            }
+          }
+
+          &.disk {
+            color: $green;
+          }
+        }
+      }
+
+      .icon {
+        font-size: 1.5rem;
+        padding: 1.5rem;
+      }
+    }
+
+    .network {
+      @include widget;
+
+      .icon {
+        font-size: 1.2rem;
+
+        &.down {
+          color: transparentize($fg-color, 0.5)
+        }
+      }
+    }
+
+    .sliders {
+      @include widget($padding: .5rem);
+
+      .icon {
+        font-size: 1.3rem;
+        min-width: 2rem;
+        padding: 0.5rem;
+      }
+
+      .true {
+        color: transparentize($fg-color, 0.5);
+      }
+
+      .scale {
+        @include slider($width: 0.8rem);
+        margin-left: 5px;
+      }
+
+      .launch {
+        @include button($flat: true);
+        font-size: 1.1rem;
+        margin: 0 .5rem;
+        padding: .5rem;
+      }
+    }
+
+    .media-list {
+      @include scrollbar;
+      .player {
+        @include player;
+        @include widget($padding: 0);
+        min-height: 14.5rem;
+      }
+    }
+  }
+}

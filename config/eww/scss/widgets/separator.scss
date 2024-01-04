@@ -1,0 +1,7 @@
+@mixin separator($spacing: 5px) {
+  background-color: transparentize($fg-color, 0.8);
+  min-width: 4px;
+  min-height: 4px;
+  border-radius: $radius;
+  margin: 0 $spacing;
+}

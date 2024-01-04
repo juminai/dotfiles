@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for i in "$@"; do
+  yt-dlp -x \
+    --audio-format mp3 \
+    --audio-quality 0 \
+    -P ~/Music \
+    -o "%(title)s.%(ext)s" \
+    "$i"
+done

@@ -1,0 +1,117 @@
+@mixin player {
+  .artwork {
+    @include image($cover: true);
+    border-radius: $radius;
+    text-shadow: $text-shadow;
+    color: white;
+
+    .info {
+      padding: 1rem;
+
+      .title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .artist,
+      .album {
+        font-size: 1.1rem;
+      }
+    }
+
+    .progress {
+      @include slider;
+
+      trough {
+        border-radius: 0;
+        border: none;
+        background-color: transparentize(white, 0.85);
+
+        highlight,
+        progress {
+          border-radius: 0;
+        }
+      }
+
+      &:hover trough {
+        background-color: transparentize(white, 0.75);
+      }
+    }
+
+    .bottom {
+      margin: .8rem;
+
+      .position {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      .icon {
+        @include image;
+      }
+
+      .controls {
+
+        .loop,
+        .shuffle {
+          color: $green;
+        }
+
+        .toggle {
+          font-size: 1.6rem;
+        }
+
+        .previous,
+        .next,
+        .loop,
+        .shuffle {
+          font-size: 1.3rem;
+        }
+
+        .disabled {
+          color: transparentize(white, 0.5);
+        }
+      }
+    }
+  }
+
+  .volume {
+    padding: 1rem;
+
+    .volume-scale {
+      @include slider;
+    }
+  }
+
+  &.spotify {
+    @include slider-color($color: $green);
+  }
+
+  &.brave,
+  &.chrome {
+    @include slider-color($color: $yellow);
+  }
+
+  &.chromium {
+    @include slider-color($color: $blue)
+  }
+
+  &.mpv {
+    @include slider-color($color: $purple)
+  }
+
+  &.cider {
+    @include slider-color($color: $red)
+  }
+}
+
+@mixin slider-color($color) {
+  .progress trough,
+  .volume-scale trough {
+
+    highlight,
+    progress {
+      background-color: $color
+    }
+  }
+}

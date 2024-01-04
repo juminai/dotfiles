@@ -1,0 +1,38 @@
+format = '($character)'
+right_format = '''$git_branch$git_status$directory'''
+
+# Disable the blank line at the start of the prompt
+add_newline = false
+command_timeout = 5000
+
+[line_break]
+disabled = true
+
+[character]
+success_symbol = "[](bold blue)"
+error_symbol = "[](bold red)"
+vicmd_symbol = "[](bold yellow)"
+
+
+[directory]
+format = " [$path](blue)"
+truncation_length = 3
+truncate_to_repo=false
+disabled = false
+
+[git_branch]
+format = "[󰘬 ](yellow)[$branch](yellow) "
+
+[git_status]
+format= "[ 󰊤 ](green)[$all_status$ahead_behind](green) "
+conflicted = "="
+ahead =	" 󰄿 ${count}"
+behind = " 󰄼 ${count}"
+diverged = " 󰄿 ${ahead_count} 󰄼 ${behind_count}"
+up_to_date = " 󰄬"
+untracked = "?${count}"
+stashed = "󰏖"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "*${count}"
+deleted = "-${count}"

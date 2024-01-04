@@ -1,0 +1,52 @@
+#!/bin/bash
+# requires pamixer
+
+input="alsa_input.pci-0000_06_00.6.analog-stereo"
+output="alsa_output.pci-0000_06_00.6.analog-stereo.monitor"
+
+input_source=$(pamixer --list-sources | awk '/"'$input'"/ {print $1}')
+output_source=$(pamixer --list-sources | awk '/"'$output'"/ {print $1}')
+
+get_source() {
+  echo '{"output": '$output_source', "input": '$input_source'}'
+}
+
+check() {
+  if [[ -z $(pgrep checkvolume) ]]; then
+    checkvolume &
+  fi
+}
+
+mic() {
+  source="pamixer --source $input_source"
+  unmute="$source -u &&"
+  if [[ $1 == 'toggle' ]]; then $source -t; fi
+  if [[ $1 == 'set' ]]; then $unmute $source --set-volume $2; fi
+  if [[ $1 == 'up' ]]; then $unmute $source -i 1; fi
+  if [[ $1 == 'down' ]]; then $unmute $source -d 2; fi
+}
+
+set() {
+  check
+  pamixer -u
+  pamixer --set-volume $1
+}
+
+up() {
+  check
+  pamixer -u
+  pamixer -i 2
+}
+
+down() {
+  check
+  pamixer -u
+  pamixer -d 2
+}
+
+if [[ $1 == 'toggle' ]]; then check && pamixer -t; fi
+if [[ $1 == 'set' ]]; then set $2; fi
+if [[ $1 == 'up' ]]; then up; fi
+if [[ $1 == 'down' ]]; then down; fi
+if [[ $1 == 'mic' ]]; then mic $2 $3; fi
+if [[ $1 == 'source' ]]; then get_source; fi

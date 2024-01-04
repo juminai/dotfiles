@@ -1,0 +1,45 @@
+#!/bin/bash
+
+INTERFACE="org.gnome.desktop.interface"
+THEME=$(gsettings get $INTERFACE gtk-theme | tr -d "'")
+SCSS="$XDG_CONFIG_HOME/eww/scss/colors.scss"
+EFFECT="--transition-fps 75 --transition-type center --transition-duration 2"
+DARK_COLOR="262626"
+LIGHT_COLOR="cacaca"
+FOOT="$XDG_CONFIG_HOME/foot/foot.ini"
+HYPR="$XDG_CONFIG_HOME/hypr/theme.conf"
+GTK3="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
+GTK2="$HOME/.gtkrc-2.0"
+
+set_dark() {
+  gsettings set $INTERFACE gtk-theme 'dark'
+  gsettings set $INTERFACE color-scheme 'prefer-dark'
+  gsettings set $INTERFACE icon-theme 'dark'
+}
+
+set_light() {
+  gsettings set $INTERFACE gtk-theme 'light'
+  gsettings set $INTERFACE color-scheme 'default'
+  gsettings set $INTERFACE icon-theme 'light'
+}
+
+toggle() {
+  if [[ $THEME == 'dark' ]]; then
+    sed '1s/dark/light/' -i $SCSS
+    sed 's/dark/light/g' -i $FOOT -i $HYPR -i $GTK3
+    sed 's/"dark"/"light"/g' -i $GTK2
+    swww clear $LIGHT_COLOR
+    set_light
+  else
+    sed '1s/light/dark/' -i $SCSS
+    sed 's/light/dark/g' -i $FOOT -i $HYPR -i $GTK3
+    sed 's/"light"/"dark"/g' -i $GTK2
+    swww clear $DARK_COLOR
+    set_dark
+  fi
+  eww update theme=$THEME
+  pkill -SIGUSR1 foot
+}
+
+if [[ $1 == 'toggle' ]]; then toggle; fi
+if [[ $1 == 'get' ]]; then echo $THEME; fi

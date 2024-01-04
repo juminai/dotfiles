@@ -1,0 +1,8 @@
+(defwidget separator [?visible]
+  (box 
+    :class "separator" 
+    :visible visible
+    :halign "center"
+    :valign "center"
+  )
+)
