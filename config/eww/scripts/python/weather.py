@@ -5,7 +5,7 @@ import requests
 import json
 import time
 import os
-from utils import update_eww, cache_weather
+from utils import update_eww, WEATHER_DIR
 
 api_key = '56bfec39d45f284396f7e099cf4d150e'
 city_id = '3466537'
@@ -88,7 +88,7 @@ def get_weather(city_id, api_key, units):
     }
 
 def get_icon_image(icon_code):
-    icon_path = f"{cache_weather}/{icon_code}.png"
+    icon_path = f"{WEATHER_DIR}/{icon_code}.png"
     
     if not os.path.exists(icon_path):
         base_url = "http://openweathermap.org/img/wn/"
@@ -100,6 +100,7 @@ def get_icon_image(icon_code):
 
     return icon_path
 
+
 def get_icon(icon_code):
     icon_map = {
         "01d": "",
@@ -108,8 +109,8 @@ def get_icon(icon_code):
         "02n": "",
         "03d": "",
         "03n": "",
-        "04d": "",
-        "04n": "",
+        "04d": "",
+        "04n": "",
         "09d": "",
         "09n": "",
         "10d": "",
@@ -121,7 +122,7 @@ def get_icon(icon_code):
         "40d": "",
         "40n": "",
     }
-    return icon_map.get(icon_code, "")
+    return icon_map.get(icon_code, "")
 
 
 if __name__ == "__main__":

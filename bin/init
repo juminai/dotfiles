@@ -3,8 +3,6 @@
 pkill eww
 pkill python
 
-$XDG_CONFIG_HOME/eww/scripts/python/apps.py &
-
 eww daemon
 eww open desktop
 eww open bar

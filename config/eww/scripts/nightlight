@@ -2,18 +2,18 @@
 
 state() {
   if [[ -z $(pgrep wlsunset) ]]; then
-    echo 'off'
+    echo false
   else
-    echo 'on'
+    echo true
   fi
 }
 
 toggle() {
-  if [[ $(state) == 'on' ]]; then
-    eww update nightlight='off'
+  if [[ $(state) == true ]]; then
+    eww update nightlight=false
     pkill wlsunset
   else
-    eww update nightlight='on'
+    eww update nightlight=true
     wlsunset -t 3400 &
   fi
 }

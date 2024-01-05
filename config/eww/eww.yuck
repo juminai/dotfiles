@@ -15,12 +15,12 @@
 (deflisten weather       :initial "{}" `scripts/python/weather.py`)
 (deflisten notifications :initial "{}" `scripts/python/notifications.py`)
 (deflisten mpris         :initial "{}" `scripts/python/mpris.py`)
-(deflisten positions     :initial "{}" `scripts/python/positions.py`)
+(deflisten apps          :initial "{}" `scripts/python/apps.py`)
 
 (defvar user             "klyn@arch")
 (defvar active           "{}")
 (defvar dock             "{}")
-(defvar apps             "{}")
+(defvar positions        "{}")
 (defvar selected         "")
 (defvar popup            "")
 (defvar duration         "250ms")
@@ -58,8 +58,8 @@
       "false": ""
     },
     "light": {
-      "on": "",
-      "off": ""
+      "true": "",
+      "false": ""
     },
     "power-profile": {
       "performance": "",

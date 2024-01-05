@@ -54,7 +54,7 @@ overview() {
   if [[ -z $(pgrep checkoverview) ]]; then
     checkoverview &
   fi
-  if [[ $ID < 6 ]]; then
+  if [[ $ID < 7 ]]; then
     hyprctl dispatch workspace +1
   else
     hyprctl dispatch workspace 1

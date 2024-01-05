@@ -106,12 +106,13 @@
 }
 
 @mixin slider-color($color) {
+
   .progress trough,
   .volume-scale trough {
 
     highlight,
     progress {
-      background-color: $color
+      background-image: linear-gradient($color);
     }
   }
 }

@@ -1,7 +1,7 @@
 (defwidget volume []
   (revealer 
     :transition "slideleft"
-    :reveal volume_rev
+    :reveal {volume_rev && !menu_rev}
     :duration duration
     (box
       :class "vol"

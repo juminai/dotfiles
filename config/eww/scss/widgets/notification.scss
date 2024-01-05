@@ -1,15 +1,12 @@
 @mixin notification {
   .content {
-    .notification {
-      padding: 1rem;
-
+    box {
       .image {
         @include image($size: 4rem);
         border-radius: $radius;
 
         &.Screenshot {
-          min-height: 108px;
-          min-width: 192px;
+          @include image($size: 8rem, $cover: true);
         }
 
         &.Spotify,
@@ -42,12 +39,12 @@
     }
 
     .actions {
-      margin: 0 1rem 1rem;
+      margin-top: .5rem;
 
       .action {
         @include button($radius: $button-radius);
         font-weight: 500;
-        padding: 0.5rem;
+        padding: 0.4rem;
       }
     }
   }

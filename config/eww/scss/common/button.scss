@@ -1,18 +1,3 @@
-@mixin button-hover {
-  box-shadow: inset 0 0 0 $border-width $border-color;
-  background-color: $hover;
-}
-
-@mixin button-active {
-  box-shadow: inset 0 0 0 $border-width $border-color;
-  background-color: transparentize($accent, 0.5);
-}
-
-@mixin button-focus {
-  box-shadow: inset 0 0 0 $border-width $accent;
-  background-color: $hover;
-}
-
 @mixin button($flat: false, $reactive: true, $focusable: true, $radius: $radius) {
   border-radius: $radius;
   color: $fg-color;
@@ -31,17 +16,20 @@
   @if $reactive {
     @if $focusable {
       &:focus {
-        @include button-focus;
+        box-shadow: inset 0 0 0 $border-width $accent;
+        background-color: $hover;
       }
     }
 
     &:hover {
-      @include button-hover;
+      box-shadow: inset 0 0 0 $border-width $border-color;
+      background-color: $hover;
     }
 
     &:active,
     &.active {
-      @include button-active;
+      box-shadow: inset 0 0 0 $border-width $border-color;
+      background-color: transparentize($accent, 0.5);
     }
   }
 }

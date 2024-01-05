@@ -7,18 +7,17 @@ import os
 import requests
 import time
 import cairosvg
+import hashlib
 
 from io import BytesIO
 from PIL import Image, ImageFilter, ImageEnhance
 from gi.repository import GLib
 from dbus.mainloop.glib import DBusGMainLoop
-from utils import get_themed_icon, cache_mpris, update_eww
+from utils import get_themed_icon, MPRIS_DIR, update_eww
 
-previous = None
-
-def get_property(player_interface, prop):
+def get_property(interface, prop):
     try:
-        return player_interface.Get("org.mpris.MediaPlayer2.Player", prop)
+        return interface.Get("org.mpris.MediaPlayer2.Player", prop)
     except dbus.exceptions.DBusException:
         return None
 
@@ -47,16 +46,12 @@ def get_icon(name):
     return icon
 
 
-def art(artwork, title, player):
-    invalid_chars = '"\'/\\|'
-
-    for char in invalid_chars:
-        title = title.replace(char, "_")
-
-    save_path = f"{cache_mpris}/{title}"
+def get_artwork(artwork, title, player):
+    file_name = hashlib.sha1(f"{title}_{player}".encode()).hexdigest()
+    save_path = f"{MPRIS_DIR}/{file_name}"
 
     if not artwork or len(artwork) > 200:
-        save_path = f"{cache_mpris}/{player}"
+        save_path = f"{MPRIS_DIR}/{player}"
         artwork = svg_to_png(get_icon(player), save_path)
 
     if not os.path.exists(save_path):
@@ -72,11 +67,17 @@ def art(artwork, title, player):
 
 
 def blur_img(artwork, save_path):
-    image = Image.open(artwork)
 
-    blurred = image.filter(ImageFilter.GaussianBlur(radius=5))
-    blurred = ImageEnhance.Brightness(blurred).enhance(0.5)
-    blurred.save(save_path, format="PNG")
+    try:
+        image = Image.open(artwork)
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+
+        blurred = image.filter(ImageFilter.GaussianBlur(radius=5))
+        blurred = ImageEnhance.Brightness(blurred).enhance(0.5)
+        blurred.save(save_path, format="PNG")
+    except FileNotFoundError:
+        pass
 
 
 def svg_to_png(svg_path, png_path):
@@ -86,64 +87,80 @@ def svg_to_png(svg_path, png_path):
 
     return png_path
 
+
+def get_players():
+    bus_names = bus.list_names()
+    
+    mpris_players = []
+    for name in bus_names:
+        if "org.mpris.MediaPlayer2" in name:
+            mpris_players.append(name)
+            
+    return mpris_players
+
    
-def mpris_data():
-    bus_names = session_bus.list_names()
+def mpris_data(changed_properties=None):
+    player_names =  get_players()
 
     players = []
 
-    for name in bus_names:
-        if "org.mpris.MediaPlayer2" in name:
-            player = session_bus.get_object(name, "/org/mpris/MediaPlayer2")
-            player_interface = dbus.Interface(player, "org.freedesktop.DBus.Properties")
-            metadata = get_property(player_interface, "Metadata")
-            playback_status = get_property(player_interface, "PlaybackStatus")
+    for name in player_names:
+        player = bus.get_object(name, "/org/mpris/MediaPlayer2")
+        interface = dbus.Interface(player, "org.freedesktop.DBus.Properties")
+        metadata = get_property(interface, "Metadata")
+        playback_status = get_property(interface, "PlaybackStatus")
 
-            if playback_status == "Stopped" or metadata is None:
-                continue
-            
-            player_name = clean_name(name)
+        if playback_status == "Stopped" or metadata is None:
+            continue
+        
+        player_name = clean_name(name)
 
-            volume = get_property(player_interface, "Volume")
-            loop_status = get_property(player_interface, "LoopStatus")
-            shuffle = bool(get_property(player_interface, "Shuffle"))
-            can_go_next = bool(get_property(player_interface, "CanGoNext"))
-            can_go_previous = bool(get_property(player_interface, "CanGoPrevious"))
-            can_play = bool(get_property(player_interface, "CanPlay"))
-            can_pause = bool(get_property(player_interface, "CanPause"))
+        volume = get_property(interface, "Volume")
+        loop_status = get_property(interface, "LoopStatus")
+        shuffle = bool(get_property(interface, "Shuffle"))
+        can_go_next = bool(get_property(interface, "CanGoNext"))
+        can_go_previous = bool(get_property(interface, "CanGoPrevious"))
+        can_play = bool(get_property(interface, "CanPlay"))
+        can_pause = bool(get_property(interface, "CanPause"))
+        
+        title = metadata.get("xesam:title", "Unknown")
+        artist = metadata.get("xesam:artist", ["Unknown"])
+        album = metadata.get("xesam:album", "Unknown")
+        length = metadata.get("mpris:length", -1) // 1000000 or -1
 
-            title = metadata.get("xesam:title", "Unknown")
-            artist = metadata.get("xesam:artist", ["Unknown"])
-            album = metadata.get("xesam:album", "Unknown")
-            artwork = metadata.get("mpris:artUrl", None)
-            length = metadata.get("mpris:length", -1) // 1000000 or -1
+        if player_name in ["brave", "chrome", "chromium"]:
+            if changed_properties is not None:
+                if "Metadata" in changed_properties:
+                    time.sleep(0.3)
 
-            player_data = {
-                "name": player_name,
-                "title": title,
-                "artist": artist[0] if artist else "",
-                "album": album,
-                "artUrl": art(artwork, title, player_name),
-                "status": playback_status,
-                "length": length,
-                "lengthStr": format_time(length) if length != -1 else -1,
-                "loop": loop_status,
-                "shuffle": shuffle,
-                "volume": int(volume * 100) if volume is not None else -1,
-                "canGoNext": can_go_next,
-                "canGoPrevious": can_go_previous,
-                "canPlay": can_play,
-                "canPause": can_pause,
-                "icon": get_icon(player_name),
-            }
-            
-            players.append(player_data)
+        artwork = metadata.get("mpris:artUrl", None)
+
+        player_data = {
+            "name": player_name,
+            "title": title,
+            "artist": artist[0],
+            "album": album,
+            "artUrl": get_artwork(artwork, title, player_name),
+            "status": playback_status,
+            "length": length,
+            "lengthStr": format_time(length) if length != -1 else -1,
+            "loop": loop_status,
+            "shuffle": shuffle,
+            "volume": int(volume * 100) if volume is not None else -1,
+            "canGoNext": can_go_next,
+            "canGoPrevious": can_go_previous,
+            "canPlay": can_play,
+            "canPause": can_pause,
+            "icon": get_icon(player_name),
+        }
+        
+        players.append(player_data)
 
     return players
 
 
 def properties_changed():
-    session_bus.add_signal_receiver(
+    bus.add_signal_receiver(
         emit,
         dbus_interface="org.freedesktop.DBus.Properties",
         signal_name="PropertiesChanged",
@@ -152,7 +169,7 @@ def properties_changed():
 
 
 def player_changed():
-    session_bus.add_signal_receiver(
+    bus.add_signal_receiver(
         emit,
         dbus_interface="org.freedesktop.DBus",
         signal_name="NameOwnerChanged",
@@ -160,25 +177,46 @@ def player_changed():
     )
 
 
+def get_positions():
+    player_names =  get_players()
+
+    positions = {}
+
+    for name in player_names:
+        player = bus.get_object(name, "/org/mpris/MediaPlayer2")
+        interface = dbus.Interface(player, "org.freedesktop.DBus.Properties")
+
+        position = get_property(interface, "Position")
+        position = position // 1000000 if position is not None else -1
+        
+        positions[clean_name(name)] = {
+            "position": position, 
+            "positionStr": format_time(position) if position != -1 else -1
+        }
+
+    return positions
+
+
+def update_positions():
+    update_eww("positions", get_positions())
+    return True
+
+
 def emit(interface, changed_properties, invalidated_properties):
     if "org.mpris.MediaPlayer2" in interface:
-        global previous
-        current = mpris_data()
-
-        if current != previous:
-            update_eww("mpris", current)
-            previous = current
+        update_eww("mpris", mpris_data(changed_properties))
 
 
 if __name__ == "__main__":
     DBusGMainLoop(set_as_default=True)
-    session_bus = dbus.SessionBus()
+    bus = dbus.SessionBus()
     loop = GLib.MainLoop()
     
     try:
         update_eww("mpris", mpris_data())
         properties_changed()
         player_changed()
+        GLib.timeout_add(1000, update_positions)
         loop.run()
     except KeyboardInterrupt:
         loop.quit()

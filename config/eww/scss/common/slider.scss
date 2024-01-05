@@ -1,4 +1,4 @@
-@mixin slider($drop-shadow: true, $width: 0.4rem, $color: $accent, $slider: true, $focusable: true, $radius: $radius) {
+@mixin slider($drop-shadow: true, $width: 0.4rem, $color: $accent, $gradient: $accent-gradient, $slider: true, $focusable: true, $radius: $radius) {
   trough {
     transition: $transition;
     border-radius: $radius;
@@ -10,7 +10,7 @@
     highlight,
     progress {
       border-radius: $radius;
-      background-color: $color;
+      background-image: $gradient;
       min-height: $width;
       min-width: $width;
     }
@@ -32,7 +32,10 @@
 
     slider {
       @if $slider {
-        background-color: lighten($color, 30);
+        background-color: $fg-color;
+        @if $theme == 'light' {
+          background-color: $bg-color;
+        }
         border-color: $border-color;
 
         @if $drop-shadow {

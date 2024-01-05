@@ -112,11 +112,6 @@
     .system-indicators {
       @include bar-button;
       font-size: 1.1rem;
-
-      .down,
-      .true {
-        color: transparentize($fg-color, 0.5);
-      }
     }
 
     .power-button {

@@ -6,6 +6,7 @@ $notification: $icons + if($theme=='light', "messages.svg", "messages-dark.svg")
 $bell: $icons + "bells.svg";
 
 $accent: $blue;
+$accent-gradient: linear-gradient(to right, $accent, lighten($accent, 12%));
 $gaps: 8px;
 $transition: 250ms;
 $radius: 1rem;

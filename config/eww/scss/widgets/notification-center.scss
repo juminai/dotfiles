@@ -24,7 +24,7 @@
       @include notification;
 
       .content {
-        @include button;
+        @include widget;
       }
     }
 

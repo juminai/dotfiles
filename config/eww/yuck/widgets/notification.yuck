@@ -15,8 +15,7 @@
       :class "content"
       :space-evenly false 
       :orientation "v"
-      (box  
-        :class "notification"
+      (box
         :space-evenly false 
         :spacing 10
         (overlay
@@ -87,6 +86,8 @@
         )
       )
       (revealer
+        :transition "slidedown"
+        :duration duration
         :reveal {
           arraylength(notification.actions) != 0 && 
           (floating ?
@@ -94,11 +95,9 @@
             (popup == notification.id)
           )
         }
-        :transition "slidedown"
-        :duration duration
         (box
           :class "actions"
-          :spacing 20
+          :spacing 10
           (for action in {notification.actions}
             (eventbox 
               :cursor "pointer"

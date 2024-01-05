@@ -44,7 +44,7 @@
       .powerprofile {
 
         &.dark,
-        &.on,
+        &.true,
         &.power-saver {
           background-color: $blue;
           color: $bg-color;

@@ -168,9 +168,25 @@
   )
 )
 
+(defwidget dnd-indicator []
+  (box 
+    :class "dnd-indicator"
+    :visible {notifications.dnd}
+    {icons.bell[notifications.dnd]}
+  )
+)
+
+(defwidget nightlight-indicator []
+  (box 
+    :class "nightlight-indicator"
+    :visible {nightlight}
+    {icons.light[nightlight]}
+  )
+)
+
 (defwidget network-indicator []
   (box 
-    :class "network-indicator ${network.status}"
+    :class "network-indicator"
     {icons.network[network.status]}
   )
 )
@@ -185,6 +201,14 @@
       :onclick "volume toggle"
       {icons.volume[audio.output.muted]}
     )
+  )
+)
+
+(defwidget mic-indicator []
+  (box 
+    :class "mic-indicator"
+    :visible {audio.input.muted}
+    {icons.microphone[audio.input.muted]}
   )
 )
 

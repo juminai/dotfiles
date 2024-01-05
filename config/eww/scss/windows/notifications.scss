@@ -2,7 +2,7 @@
   .notification {
     @include notification;
     .content {
-      @include floating-widget($padding: 0);
+      @include floating-widget;
       min-width: 28rem;
     }
   }

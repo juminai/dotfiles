@@ -12,7 +12,7 @@ gi.require_version("GdkPixbuf", "2.0")
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib, GdkPixbuf
 from bs4 import BeautifulSoup
-from utils import get_themed_icon, cache_notifications, load, update_eww, write_file
+from utils import get_themed_icon, NOTIFICATIONS_DIR, load, update_eww, write_file
 
 class Notifications(dbus.service.Object):
     def __init__(self):
@@ -98,7 +98,6 @@ class Notifications(dbus.service.Object):
     def ToggleDND(self):
         self.dnd = not self.dnd
         self.list["dnd"] = self.dnd
-
         self.update()
 
 
@@ -111,7 +110,6 @@ class Notifications(dbus.service.Object):
 
         self.NotificationClosed(notification_id, 2)
         self.DismissPopup(notification_id)
-
         self.update()
 
 
@@ -123,7 +121,6 @@ class Notifications(dbus.service.Object):
                 break
 
         self.RemovePopupID(notification_id)
-
         self.update()
 
 
@@ -148,7 +145,6 @@ class Notifications(dbus.service.Object):
         for i in self.active_popups.keys():
             GLib.source_remove(self.active_popups[i])
         self.active_popups = {}
-
         self.update()
 
 
@@ -159,7 +155,6 @@ class Notifications(dbus.service.Object):
                 break
 
         self.list["notifications"].insert(0, notification)
-
         self.update()
 
 
@@ -182,7 +177,6 @@ class Notifications(dbus.service.Object):
             self.DismissPopup, 
             popup_id
         )
-
         self.update()
 
 
@@ -204,7 +198,7 @@ class Notifications(dbus.service.Object):
 
         if "image-data" in hints:
             image_data = hints["image-data"]
-            image_path = f"{cache_notifications}/{notification_id}"
+            image_path = f"{NOTIFICATIONS_DIR}/{notification_id}"
             self.save_img_byte(image_data, image_path)
             image = image_path
     

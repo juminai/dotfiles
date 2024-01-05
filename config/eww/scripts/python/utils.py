@@ -10,19 +10,19 @@ gi.require_version("Gtk", "3.0")
 
 from gi.repository import Gtk
 
-cache = os.path.expandvars("$XDG_CACHE_HOME/eww")
+CACHE = os.path.expandvars("$XDG_CACHE_HOME/eww")
 
-cache_apps = os.path.join(cache, "apps")
-cache_notifications = os.path.join(cache, "notifications")
-cache_mpris = os.path.join(cache, "mpris")
-cache_weather = os.path.join(cache, "weather")
+APPS_DIR = os.path.join(CACHE, "apps")
+NOTIFICATIONS_DIR = os.path.join(CACHE, "notifications")
+MPRIS_DIR = os.path.join(CACHE, "mpris")
+WEATHER_DIR = os.path.join(CACHE, "weather")
 
-apps_file = os.path.join(cache_apps, "apps.json")
-dock_file = os.path.join(cache_apps, "dock.json")
-frequency_file = os.path.join(cache_apps, "frequency.json")
-notifications_file = os.path.join(cache_notifications, "notifications.json")
+APPS_JSON = os.path.join(APPS_DIR, "apps.json")
+DOCK_JSON = os.path.join(APPS_DIR, "dock.json")
+FREQUENCY_JSON = os.path.join(APPS_DIR, "frequency.json")
+NOTIFICATIONS_JSON = os.path.join(NOTIFICATIONS_DIR, "notifications.json")
 
-for file in [cache, cache_apps, cache_notifications, cache_mpris, cache_weather]:
+for file in [CACHE, APPS_DIR, NOTIFICATIONS_DIR, MPRIS_DIR, WEATHER_DIR]:
     os.makedirs(file, exist_ok=True)
 
 def get_themed_icon(icon_name):
@@ -45,10 +45,10 @@ def get_themed_icon(icon_name):
 
 def get_file(name):
     file_paths = {
-        "apps": apps_file,
-        "dock": dock_file,
-        "frequency": frequency_file,
-        "notifications": notifications_file
+        "apps": APPS_JSON,
+        "dock": DOCK_JSON,
+        "frequency": FREQUENCY_JSON,
+        "notifications": NOTIFICATIONS_JSON
     }
 
     return file_paths.get(name, None)
@@ -61,17 +61,17 @@ def load(file):
         with open(file, "r") as log:
             return json.load(log)
     except (FileNotFoundError, json.JSONDecodeError):
-        if file == notifications_file:
+        if file == NOTIFICATIONS_JSON:
             return {
                 "dnd": False, 
                 "notifications": [],
                 "popups": []
             }
 
-        if file == frequency_file:
+        if file == FREQUENCY_JSON:
             return {}
 
-        if file in [dock_file, apps_file]:
+        if file in [DOCK_JSON, APPS_JSON]:
             return []
 
 
