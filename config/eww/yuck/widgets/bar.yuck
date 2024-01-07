@@ -38,6 +38,7 @@
         :text {active.class != "null" ? active.class : "Desktop ${active.workspace}"}
         :limit-width 20
       )
+      (label :text {apps[0].id} :visible false)
     )
   )
 )
@@ -49,6 +50,7 @@
     (button
       :class "notification-bar"
       :onclick "actions info-center"
+      :tooltip "${arraylength(notifications.notifications)} notifications"
       :visible {arraylength(notifications.notifications) > 0}
       (box
         :space-evenly false
@@ -73,12 +75,13 @@
 
 (defwidget date-bar []
   (button 
-    :class "date-bar ${info-center_rev}" 
+    :class "date-bar ${info-center_rev ? "active" : ""}" 
     :onclick "actions info-center"
     (box
       :space-evenly false 
+      :spacing 5
       (clock :name "clock-bar")
-      (separator)
+      (label :text "-")
       (label 
         :class "today" 
         :text {formattime(EWW_TIME, "%a, %b %d", "America/Sao_Paulo")}
@@ -133,29 +136,33 @@
         (box
           :class "buttons"
           :spacing 5
-          (utils_button 
+          (utils-button 
             :css "colorpicker"
             :icon ""
             :action "actions colorpicker"
             :wait "300ms"
+            :tip "Color Picker"
           )
-          (utils_button 
+          (utils-button 
             :css "screenshot"
             :icon ""
             :action "actions screenshot full"
             :wait "300ms"
+            :tip "Screenshot Full"
           )
-          (utils_button 
+          (utils-button 
             :css "screenshot"
             :icon ""
             :action "actions screenshot crop"
             :wait "300ms"
+            :tip "Screenshot Crop"
           )
-          (utils_button 
+          (utils-button 
             :css "update"
             :icon ""
             :action "actions update"
             :wait "300ms"
+            :tip "Update"
           )
         )
       )
@@ -199,6 +206,7 @@
     (button
       :class "volume-indicator ${audio.output.muted}"
       :onclick "volume toggle"
+      :tooltip "${audio.output.volume}%"
       {icons.volume[audio.output.muted]}
     )
   )

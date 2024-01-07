@@ -10,7 +10,6 @@
         (workspaces) 
         (separator)
         (active-client)
-        (label :text {apps[0].id} :visible false)
       )
       (box 
         :class "center" 
@@ -31,7 +30,7 @@
           :class "system-indicators"
           :onclick "actions menu"
           (box
-            :class "system-indicators"
+            :class "system-indicators ${menu_rev ? "active" : ""}"
             :spacing 10
             (dnd-indicator)
             (nightlight-indicator)

@@ -57,10 +57,9 @@
               :valign "start"
               :visible {!floating}
               :text {
-                ;EWW_TIME - notification.time < 79200 ? 
-                notification.time != "null" ? 
-                formattime(notification.time, "%R", "America/Sao_Paulo") : "" 
-                ;formattime(notification.time, "%a, %b %d - %H:%M", "America/Sao_Paulo")
+                ;EWW_TIME - notification.time < 82000 ? 
+                formattime(notification.time, "%R", "America/Sao_Paulo") ;:
+                ;formattime(notification.time, "%a, %R", "America/Sao_Paulo")
               } 
 
             )
@@ -91,8 +90,7 @@
         :reveal {
           arraylength(notification.actions) != 0 && 
           (floating ?
-            (popup == "_${notification.id}") : 
-            (popup == notification.id)
+            (popup == "_${notification.id}") : (popup == notification.id)
           )
         }
         (box

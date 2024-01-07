@@ -1,5 +1,6 @@
 @mixin date($size, $tiny: false) {
   color: $fg-color;
+
   .clock {
     .time {
       font-size: $size;
@@ -16,13 +17,6 @@
         box-shadow: $text-shadow;
       }
 
-      @if $tiny {
-        margin: $size*0.1 $size*0.15;
-        box {
-          box-shadow: none;
-        }
-      }
-
       &.purple {
         background-color: $purple;
       }
@@ -34,12 +28,27 @@
       &.yellow {
         background-color: $yellow;
       }
+
+      @if $tiny {
+        margin: $size*0.1 $size*0.15;
+
+        box {
+          box-shadow: none;
+        }
+
+        &.purple,
+        &.green,
+        &.yellow {
+          background-color: $fg-color;
+        }
+      }
     }
   }
 
   .today {
     font-size: $size * 0.25;
     font-weight: 500;
+
     @if $tiny {
       font-size: $size * 0.85;
     }

@@ -71,7 +71,7 @@ def get_workspaces():
             "icon": app["icon"],
             "address": client["address"],
             "at": client["at"],
-            "size": client["size"]
+            "size": client["size"],
         }
 
         data[workspace_id].append(window)

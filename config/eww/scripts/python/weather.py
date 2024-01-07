@@ -87,6 +87,7 @@ def get_weather(city_id, api_key, units):
         "hourly": hourly_data
     }
 
+
 def get_icon_image(icon_code):
     icon_path = f"{WEATHER_DIR}/{icon_code}.png"
     

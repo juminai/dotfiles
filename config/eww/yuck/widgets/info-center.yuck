@@ -39,9 +39,7 @@
       (box
         :class "temp"
         :space-evenly false
-        (label 
-          :text {round(weather.current.temp, 0)}
-        )
+        (label :text {round(weather.current.temp, 0)})
         (label 
           :class "temp celcius" 
           :text "°"
@@ -54,19 +52,23 @@
         (label 
           :class "description"
           :text {weather.current.description}
+          :xalign 0
         )
         (box
           :space-evenly false
           (label 
             :class "feel-like" 
             :text "Feels like ${round(weather.current.feels_like, 0)}"
+            :xalign 0
           )
           (grau)
         )
         (box
           :space-evenly false
-          (label :class "humidity"
+          (label 
+            :class "humidity"
             :text "Humidity ${round(weather.current.humidity, 0)}"
+            :xalign 0
           )
           (grau)
         )

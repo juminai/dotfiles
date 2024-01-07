@@ -3,7 +3,7 @@
     @include floating-widget;
 
     .workspace {
-      @include button($radius: $radius*0.6);
+      @include button($radius: $button-radius);
 
       .indicator {
         padding: 2px;
@@ -13,7 +13,7 @@
       }
 
       .window {
-        @include button($radius: $radius*0.6);
+        @include button($radius: $button-radius);
       }
 
       .icon {

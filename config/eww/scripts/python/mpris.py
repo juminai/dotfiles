@@ -67,7 +67,6 @@ def get_artwork(artwork, title, player):
 
 
 def blur_img(artwork, save_path):
-
     try:
         image = Image.open(artwork)
         if image.mode != "RGB":
@@ -99,7 +98,7 @@ def get_players():
     return mpris_players
 
    
-def mpris_data(changed_properties=None):
+def mpris_data():
     player_names =  get_players()
 
     players = []
@@ -114,7 +113,11 @@ def mpris_data(changed_properties=None):
             continue
         
         player_name = clean_name(name)
-
+        title = metadata.get("xesam:title", "Unknown")
+        artist = metadata.get("xesam:artist", ["Unknown"])[0]
+        album = metadata.get("xesam:album", "Unknown")
+        artwork = metadata.get("mpris:artUrl", None)
+        length = metadata.get("mpris:length", -1) // 1000000 or -1
         volume = get_property(interface, "Volume")
         loop_status = get_property(interface, "LoopStatus")
         shuffle = bool(get_property(interface, "Shuffle"))
@@ -122,31 +125,19 @@ def mpris_data(changed_properties=None):
         can_go_previous = bool(get_property(interface, "CanGoPrevious"))
         can_play = bool(get_property(interface, "CanPlay"))
         can_pause = bool(get_property(interface, "CanPause"))
-        
-        title = metadata.get("xesam:title", "Unknown")
-        artist = metadata.get("xesam:artist", ["Unknown"])
-        album = metadata.get("xesam:album", "Unknown")
-        length = metadata.get("mpris:length", -1) // 1000000 or -1
-
-        if player_name in ["brave", "chrome", "chromium"]:
-            if changed_properties is not None:
-                if "Metadata" in changed_properties:
-                    time.sleep(0.3)
-
-        artwork = metadata.get("mpris:artUrl", None)
 
         player_data = {
             "name": player_name,
             "title": title,
-            "artist": artist[0],
+            "artist": artist,
             "album": album,
             "artUrl": get_artwork(artwork, title, player_name),
             "status": playback_status,
             "length": length,
             "lengthStr": format_time(length) if length != -1 else -1,
+            "volume": int(volume * 100) if volume is not None else -1,
             "loop": loop_status,
             "shuffle": shuffle,
-            "volume": int(volume * 100) if volume is not None else -1,
             "canGoNext": can_go_next,
             "canGoPrevious": can_go_previous,
             "canPlay": can_play,
@@ -157,24 +148,6 @@ def mpris_data(changed_properties=None):
         players.append(player_data)
 
     return players
-
-
-def properties_changed():
-    bus.add_signal_receiver(
-        emit,
-        dbus_interface="org.freedesktop.DBus.Properties",
-        signal_name="PropertiesChanged",
-        path="/org/mpris/MediaPlayer2"
-    )
-
-
-def player_changed():
-    bus.add_signal_receiver(
-        emit,
-        dbus_interface="org.freedesktop.DBus",
-        signal_name="NameOwnerChanged",
-        path="/org/freedesktop/DBus"
-    )
 
 
 def get_positions():
@@ -197,6 +170,24 @@ def get_positions():
     return positions
 
 
+def properties_changed():
+    bus.add_signal_receiver(
+        emit,
+        dbus_interface="org.freedesktop.DBus.Properties",
+        signal_name="PropertiesChanged",
+        path="/org/mpris/MediaPlayer2"
+    )
+
+
+def player_changed():
+    bus.add_signal_receiver(
+        emit,
+        dbus_interface="org.freedesktop.DBus",
+        signal_name="NameOwnerChanged",
+        path="/org/freedesktop/DBus"
+    )
+
+
 def update_positions():
     update_eww("positions", get_positions())
     return True
@@ -204,7 +195,8 @@ def update_positions():
 
 def emit(interface, changed_properties, invalidated_properties):
     if "org.mpris.MediaPlayer2" in interface:
-        update_eww("mpris", mpris_data(changed_properties))
+        if "Rate" not in changed_properties:
+            update_eww("mpris", mpris_data())
 
 
 if __name__ == "__main__":

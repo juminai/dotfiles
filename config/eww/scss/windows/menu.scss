@@ -3,13 +3,13 @@
     @include floating-widget();
 
     .profile {
-      .image {
+      &.picture {
         background-image: url($avatar);
         @include image($size: 6rem);
         border-radius: $radius;
       }
 
-      .profile-info {
+      &.info {
         @include widget;
 
         .name {
@@ -21,7 +21,7 @@
           font-size: 1.1rem;
         }
 
-        .quick-power {
+        .power {
           @include powermenu-button($size: 1.5rem);
         }
       }
@@ -116,13 +116,24 @@
     }
 
     .network {
-      @include widget;
+      .indicator {
+        @include widget;
 
-      .icon {
-        font-size: 1.2rem;
+        .icon {
+          font-size: 1.2rem;
 
-        &.down {
-          color: transparentize($fg-color, 0.5)
+          &.down {
+            color: transparentize($fg-color, 0.5)
+          }
+        }
+      }
+
+      .metric {
+        min-width: 6rem;
+        @include widget;
+
+        .icon {
+          font-size: 1.1rem;
         }
       }
     }
@@ -155,6 +166,7 @@
 
     .media-list {
       @include scrollbar;
+
       .player {
         @include player;
         @include widget($padding: 0);

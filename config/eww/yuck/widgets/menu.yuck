@@ -1,38 +1,47 @@
 (defwidget profile []
   (box
-    :class "profile-info"
+    :class "profile"
     :space-evenly false
-    :hexpand true
-	  (box  
-      :space-evenly false 
-      :orientation "v"
-      :hexpand true
-      :spacing 5
-      (label :class "name"  :text user :xalign 0)
-      (label :class "uptime" :text "  ${round(uptime, 0)} min" :xalign 0)
-    )
+    :spacing 15
+    (box :class "profile picture" )
     (box
-      :class "quick-power"
-      :halign "end"
-      :valign "end"
-      :spacing 10
-      (powermenu-button :command "poweroff")
-      (powermenu-button :command "exit")
+      :class "profile info"
+      :space-evenly false
+      :hexpand true
+      (box  
+        :space-evenly false 
+        :orientation "v"
+        :hexpand true
+        :spacing 5
+        (label :class "name"  :text user :xalign 0)
+        (box
+          :class "uptime"
+          :spacing 10
+          :space-evenly false
+          (label :text "")
+          (label :text "${round(uptime, 0)} min")
+        )
+      )
+      (box
+        :class "power"
+        :halign "end"
+        :valign "center"
+        :spacing 10
+        (powermenu-button :command "poweroff")
+        (powermenu-button :command "exit")
+      )
     )
   )
 )
 
-(defwidget profile-image []
-  (box :class "image" )
-)
-
-(defwidget utils_button [icon action css wait] 
+(defwidget utils-button [icon action css wait ?tip] 
   (eventbox 
     :cursor "pointer"
     (button 
       :class css 
       :onclick action
       :timeout wait
+      :tooltip tip
       icon
     )
   )
@@ -45,13 +54,13 @@
     :spacing 15
     (box  
       :spacing 15
-      (utils_button 
+      (utils-button 
         :css "dnd ${notifications.dnd}" 
         :icon {icons.bell[notifications.dnd]}
         :action "scripts/notifications toggle"
         :wait "200ms"
       )
-      (utils_button 
+      (utils-button 
         :css "nightlight ${nightlight}"
         :icon {icons.light[nightlight]}
         :action "scripts/nightlight toggle"
@@ -60,13 +69,13 @@
     )
     (box 
       :spacing 15
-      (utils_button 
+      (utils-button 
         :css "theme ${theme}"
         :icon ""
         :action "scripts/theme toggle"
         :wait "200ms"
       )
-      (utils_button 
+      (utils-button 
         :css "powerprofile ${powerprofile}"
         :icon {icons.power-profile[powerprofile]}
         :action "scripts/powerprofile toggle"
@@ -195,32 +204,43 @@
     :class "network" 
     :space-evenly false 
     :spacing 10
-    (label 
-      :class "icon ${network.status}"
-      :text {icons.network[network.status]}
-    )
-    (label :class "name" :text {network.name})
-    (box 
-      :halign "end" 
-      :hexpand true 
-      :spacing 10 
+    :hexpand true
+    (box
+      :class "indicator"
       :space-evenly false
-      (box 
-        :space-evenly false 
-        :spacing 10
-        (label :text "") 
-        (label
-          :text "${round(EWW_NET[network.name].NET_DOWN / 1000000, 2)}MB" 
-          :xalign 0
+      :spacing 8
+      :hexpand true
+      (label 
+        :class "icon ${network.status}"
+        :text {icons.network[network.status]}
+      )
+      (label :class "name" :text {network.name})
+    )
+    (box
+      :space-evenly false
+      :spacing 10
+      (box
+        :class "metric"
+        (box
+          :space-evenly false 
+          :spacing 8
+          (label :text "" :class "icon") 
+          (label 
+            :text "${round(EWW_NET[network.name].NET_DOWN / 1000000, 2)}MB"
+            :xalign 1 :hexpand true
+          )
         )
       )
-      (box 
-        :space-evenly false 
-        :spacing 10
-        (label :text "") 
-        (label 
-          :text "${round(EWW_NET[network.name].NET_UP / 1000000, 2)}MB" 
-          :xalign 0
+      (box
+        :class "metric"
+        (box
+          :space-evenly false 
+          :spacing 8
+          (label :text "" :class "icon") 
+          (label 
+            :text "${round(EWW_NET[network.name].NET_UP / 1000000, 2)}MB"
+            :xalign 1 :hexpand true
+          )
         )
       )
     )

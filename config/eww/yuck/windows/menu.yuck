@@ -10,17 +10,13 @@
         :space-evenly false
         :orientation "v"
         :spacing 15
-        (box
-          :class "profile"
-          :space-evenly false
-          :spacing 15
-          (profile-image) (profile)
-        )
+        (profile)
         (system-sliders)
         (menu-network)
         (box
           :spacing 15
-          (utils) (system-info)
+          (utils)
+          (system-info)
         )
         (scroll 
           :class "media-list" 
