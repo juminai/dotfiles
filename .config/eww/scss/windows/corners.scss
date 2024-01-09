@@ -1,0 +1,13 @@
+.corner {
+  background-color: transparent;
+  padding: 15px;
+  border-radius: 100%;
+
+  &.left {
+    box-shadow: -15px -15px 0 0 $bg-color;
+  }
+
+  &.right {
+    box-shadow: 15px -15px 0 0 $bg-color;
+  }
+}

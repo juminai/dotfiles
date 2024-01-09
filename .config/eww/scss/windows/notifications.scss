@@ -1,0 +1,9 @@
+.notifications {
+  .notification {
+    @include notification;
+    .content {
+      @include floating-widget;
+      min-width: 28rem;
+    }
+  }
+}

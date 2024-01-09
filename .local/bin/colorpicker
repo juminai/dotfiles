@@ -1,0 +1,25 @@
+#!/bin/bash
+# requires hyprpicker imagemagick wl-clipboard
+
+TEMP_DIR=$HOME/.cache/colorpicker
+
+[ ! -d $TEMP_DIR ] && mkdir -p $TEMP_DIR
+
+pick() {
+  HEX_COLOR=$(hyprpicker)
+
+  [[ -z $HEX_COLOR ]] && exit 1
+
+  HEX="${HEX_COLOR#\#}"
+  FNAME="$TEMP_DIR/$HEX.png"
+
+  convert -size 100x100 xc:"$HEX_COLOR" "$FNAME"
+
+  COLOR_CODE="$HEX_COLOR"
+
+  echo "$COLOR_CODE" | wl-copy -n
+
+  notify-send -u low -a "Color Picker" -i "$FNAME" $COLOR_CODE "Copied to clipboard"
+}
+
+pick

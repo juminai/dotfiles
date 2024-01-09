@@ -1,0 +1,53 @@
+(defwidget client [workspace]
+  (eventbox
+    :class "workspace"
+    :onclick "scripts/hyprland workspace ${workspace.id}"
+    :onrightclick {
+      selected != "" ? 
+      "scripts/hyprland move ${workspace.id} ${selected}" : 
+      ""
+    }
+    :tooltip "Workspace ${workspace.id}"
+    (overlay
+      (box 
+        :space-evenly false
+        :style "
+          min-width: ${round(1920 * 0.12, 0)}px;
+          min-height: ${round(1080 * 0.12, 0)}px;
+        "
+        (for window in {workspace.windows}
+          (box
+            :class "window ${window.address == "" ? "empty" : ""}"
+            :style "
+              margin-left: ${round(window.at[0] * 0.12, 0)}px;
+              margin-top: ${round(window.at[1] * 0.12, 0)}px;
+              margin-right: -${round((window.at[0] + window.size[0]) * 0.12, 0)}px;
+              margin-bottom: ${round(1080 * 0.12 - ((window.at[1] + window.size[1]) * 0.12), 0)}px;
+            "
+            (eventbox 
+              :class "window button"
+              :cursor "cell"
+              :onrightclick {
+                selected == "" ? 
+                "scripts/hyprland update ${window.address}" : 
+                "scripts/hyprland move ${workspace.id} ${selected}"
+              }
+              :onmiddleclick "scripts/hyprland close ${window.address}"
+              :tooltip {window.class}
+              (box
+                :class "icon ${window.icon}"
+                :style "background-image: url('${window.icon}');"
+                :halign "center" :valign "center"
+              )
+            )
+          )
+        )
+      )
+      (box 
+        :class "indicator" 
+        :valign "start" 
+        :visible {workspace.id == active.workspace}
+      )
+    )
+  )
+)

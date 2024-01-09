@@ -1,0 +1,11 @@
+tooltip {
+  >*>* {
+    background-color: $bg-color;
+    border-radius: $button-radius;
+    border: $border;
+    color: $fg-color;
+    padding: 5px;
+    margin: 4px;
+    box-shadow: 0 0 3px 0 $shadow;
+  }
+}

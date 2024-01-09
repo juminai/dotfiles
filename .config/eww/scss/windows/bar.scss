@@ -1,0 +1,126 @@
+@mixin bar-button {
+  @include button($flat: true);
+  padding: 0 6px;
+  border-radius: $button-radius;
+}
+
+.bar {
+  .widget {
+    background-color: $bg-color;
+    padding: 5px 10px;
+    margin-bottom: $gaps;
+    box-shadow: 0 0 5px 0 $shadow;
+    font-weight: 500;
+
+    .separator {
+      @include separator;
+    }
+
+    .workspaces {
+      @include bar-button;
+      &:active {
+        background-image: none;
+      }
+
+      .indicator {
+        transition: $transition/2;
+        border-radius: $radius;
+
+        &.occupied {
+          background: lighten($bg-color, 50);
+          min-width: 10px;
+          min-height: 10px;
+
+          @if $theme =='light' {
+            background: transparentize($fg-color, 0.3);
+          }
+        }
+
+        &.active {
+          background: $accent;
+          min-width: 24px;
+          min-height: 12px
+        }
+
+        &.empty {
+          background: transparentize($fg-color, 0.8);
+          min-width: 8px;
+          min-height: 8px;
+        }
+
+        &:hover {
+          &.empty {
+            background: transparentize($fg-color, 0.6);
+          }
+        }
+      }
+    }
+
+    .active-client {
+      @include bar-button;
+
+      .icon {
+        @include image($size: 20px);
+      }
+
+      .name {
+        font-size: 1rem;
+      }
+    }
+
+    .notification-bar {
+      @include bar-button;
+
+      .icon {
+        font-family: 'Font Awesome 6 Duotone Solid';
+        font-size: 1.2rem;
+      }
+
+      .summary {
+        margin-right: 5px
+      }
+    }
+
+    .date-bar {
+      @include bar-button;
+      @include date($size: 1.2rem, $tiny: true);
+    }
+
+    .media-bar {
+      @include bar-button;
+
+      .icon {
+        @include image($size: 20px);
+      }
+
+      .title {
+        margin-right: 5px;
+      }
+    }
+
+    .utils-bar {
+      .caret {
+        @include bar-button;
+      }
+
+      .buttons {
+        margin-right: 5px;
+
+        button {
+          @include bar-button;
+        }
+      }
+    }
+
+    .system-indicators {
+      @include bar-button;
+      font-size: 1.1rem;
+    }
+
+    .power-button {
+      @include bar-button;
+      font-size: 1.2rem;
+      color: $error;
+    }
+  }
+}

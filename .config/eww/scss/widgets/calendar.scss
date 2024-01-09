@@ -1,0 +1,29 @@
+@mixin calendar {
+  font-size: 1.1rem;
+  font-weight: 500;
+  @include widget($padding: 1rem 1rem 0 1rem);
+
+  calendar {
+    padding: 0.4rem;
+
+    &:selected {
+      box-shadow: inset 0 -8px 0 0 transparentize($accent, 0.5),
+        inset 0 0 0 1px $accent;
+      border-radius: $button-radius;
+    }
+
+    &.highlight,
+    &.header {
+      color: $accent;
+    }
+
+    &.button {
+      @include button($flat: true);
+      color: $accent;
+    }
+
+    &:indeterminate {
+      color: transparentize($fg-color, 0.75);
+    }
+  }
+}

@@ -1,0 +1,52 @@
+(defwidget menu []
+  (revealer 
+    :transition "slidedown"
+    :reveal menu_rev
+    :duration duration
+    (box
+      :class "menu"
+      (box 
+        :class "widget" 
+        :space-evenly false
+        :orientation "v"
+        :spacing 15
+        (profile)
+        (system-sliders)
+        (box
+          :orientation "v"
+          :space-evenly false
+          :spacing {themes_rev ? 15 : 0}
+          (box
+            :spacing 15
+            (menu-network)
+            (theme-selector)
+          )
+          (themes)
+        )
+        (box
+          :spacing 15
+          (utils)
+          (system-info)
+        )
+        (scroll 
+          :class "media-list" 
+          :vscroll true
+          :visible {arraylength(mpris) > 0}
+          :height {
+            arraylength(mpris) == 1 ?
+            round(arraylength(mpris) * 215, 0) :
+            round(2 * 220, 0)
+          }
+          (box
+            :orientation "v"  
+            :space-evenly false
+            :spacing 10
+            (for i in mpris
+              (player :player i)
+            )
+          )
+        )
+      )
+    )
+  )
+)

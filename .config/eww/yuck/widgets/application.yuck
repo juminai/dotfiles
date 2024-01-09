@@ -1,0 +1,50 @@
+(defwidget application [app simple]
+  (eventbox
+    :class "application"
+    :cursor "pointer"
+    :tooltip {simple ? app.name : ""}
+    (overlay
+      (button 
+        :onclick {
+          app.address != "null" && simple ? 
+          "scripts/hyprland window ${app.address}" : 
+          !simple ? "actions launcher open ${app.id}" : "actions launch-app ${app.id}"
+        }
+        :onrightclick "scripts/apps add ${app.id}"
+        :onmiddleclick "scripts/hyprland close ${app.address}"
+        (box 
+          :space-evenly false
+          :spacing 10 
+          (box 
+            :class "icon" 
+            :style "background-image: url('${app.icon}');"
+            :halign "center" 
+            :valign "center"
+          )
+          (box
+            :visible {!simple}
+            :orientation "v" 
+            :space-evenly false 
+            :spacing 5 
+            :valign {app.description != "null" ? "start" : "center"}
+            :halign "start"
+            (label :class "name" :text {app.name} :halign "start")
+            (label
+              :visible {app.description != "null"}
+              :class "description"
+              :text {app.description}  
+              :halign "start"
+              :wrap true
+              :xalign 0
+            )
+          )
+        )
+      )
+      (box 
+        :class "indicator ${app.address == active.address ? "active" : app.address != "null" ? "open" : ""}" 
+        :valign "end"
+        :visible {app.address != "null" && simple}
+      )
+    )
+  )
+)

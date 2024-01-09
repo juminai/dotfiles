@@ -1,0 +1,19 @@
+#!/bin/bash
+
+input_source=$(volume source | jq .input)
+
+output=$(pamixer --get-volume)
+output_mute=$(pamixer --get-mute)
+input=$(pamixer --source $input_source --get-volume)
+input_mute=$(pamixer --source $input_source --get-mute)
+
+echo '{"output": {"volume": '$output', "muted": "'$output_mute'"}, "input": {"volume": '$input', "muted": "'$input_mute'"}}'
+
+pactl subscribe | rg --line-buffered "on sink|on source" | while read -r _; do
+  output=$(pamixer --get-volume)
+  output_mute=$(pamixer --get-mute)
+  input=$(pamixer --source $input_source --get-volume)
+  input_mute=$(pamixer --source $input_source --get-mute)
+
+  echo '{"output": {"volume": '$output', "muted": "'$output_mute'"}, "input": {"volume": '$input', "muted": "'$input_mute'"}}'
+done

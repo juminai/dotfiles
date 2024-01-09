@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ $1 == 'window' ]]; then hyprctl dispatch focuswindow address:$2; fi
+if [[ $1 == 'workspace' ]]; then hyprctl dispatch workspace $2; fi
+if [[ $1 == 'move' ]]; then hyprctl dispatch movetoworkspacesilent $2,address:$3 && eww update selected=""; fi
+if [[ $1 == 'special' ]]; then hyprctl dispatch movetoworkspacesilent special,address:$2; fi
+if [[ $1 == 'close' ]]; then hyprctl dispatch closewindow address:$2; fi
+if [[ $1 == 'update' ]]; then eww update selected=$2; fi

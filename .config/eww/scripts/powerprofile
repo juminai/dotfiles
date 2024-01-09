@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PROFILE=$(powerprofilesctl get)
+
+toggle() {
+  if [[ $PROFILE == 'balanced' ]]; then
+    eww update powerprofile=power-saver
+    powerprofilesctl set power-saver
+  else
+    eww update powerprofile=balanced
+    powerprofilesctl set balanced
+  fi
+}
+
+if [[ $1 == 'toggle' ]]; then toggle; fi
+if [[ $1 == 'get' ]]; then echo $PROFILE; fi

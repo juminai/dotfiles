@@ -1,0 +1,12 @@
+#!/bin/bash
+
+image() {
+  wallpaper & disown
+}
+
+from_color() {
+  color & disown
+}
+
+if [[ $1 == 'image' ]]; then image; fi
+if [[ $1 == 'color' ]]; then from_color; fi  

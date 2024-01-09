@@ -1,0 +1,36 @@
+@mixin scrollbar {
+  scrollbar.vertical {
+    transition: $transition;
+    background: transparentize($fg-color, 0.95);
+    border-radius: $radius;
+
+    &:hover {
+      background: transparentize($fg-color, 0.92);
+
+      slider {
+        background: transparentize($fg-color, 0.3);
+        min-width: 0.5rem;
+      }
+    }
+  }
+
+  scrollbar.vertical slider {
+    background-color: transparentize($fg-color, 0.5);
+    border-radius: $radius;
+    min-width: .4rem;
+    min-height: 2rem;
+    transition: $transition;
+  }
+
+  overshoot {
+    &.top {
+      background: transparentize($accent, 0.8);
+      border-radius: 0 0 100% 100%;
+    }
+
+    &.bottom {
+      background: transparentize($accent, 0.8);
+      border-radius: 100% 100% 0 0;
+    }
+  }
+}

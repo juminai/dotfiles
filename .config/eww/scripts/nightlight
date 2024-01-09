@@ -1,0 +1,23 @@
+#!/bin/bash
+
+state() {
+  if [[ -z $(pgrep wlsunset) ]]; then
+    echo false
+  else
+    echo true
+  fi
+}
+
+toggle() {
+  if [[ $(state) == true ]]; then
+    eww update nightlight=false
+    pkill wlsunset
+  else
+    eww update nightlight=true
+    wlsunset -t 3400 &
+  fi
+}
+
+
+if [[ $1 == 'toggle' ]]; then toggle; fi
+if [[ $1 == 'get' ]]; then state; fi

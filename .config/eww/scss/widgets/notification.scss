@@ -1,0 +1,76 @@
+@mixin notification {
+  .content {
+    &.critical {
+      background-color: $tertiaryContainer;
+    }
+    box {
+      .image {
+        @include image($size: 4rem);
+        border-radius: $radius;
+
+        &.Screenshot {
+          @include image($size: 8rem, $cover: true);
+        }
+
+        &.Spotify,
+        &.Color,
+        &.Cider {
+          @include image($size: 6rem);
+        }
+      }
+
+      .summary {
+        font-weight: bold;
+      }
+
+      .app-icon {
+        @include image($size: 1.3rem);
+      }
+
+      .time {
+        font-size: .9rem;
+        font-weight: 400;
+        color: transparentize($fg-color, 0.1);
+        margin-top: 2px;
+      }
+
+      .close {
+        min-width: 1.4em;
+        min-height: 1.4em;
+        border-radius: $radius/2;
+      }
+    }
+
+    .actions {
+      margin-top: .5rem;
+
+      .action {
+        @include button($radius: $button-radius);
+        font-weight: 500;
+        padding: 0.4rem;
+      }
+    }
+  }
+
+  &:hover {
+    .content {
+      .close {
+        @include button($radius: $radius/2);
+        transition: 0ms;
+        background-color: transparentize($accent, 0.6);
+
+        &:hover {
+          background-color: transparentize($accent, 0.1);
+
+          @if $theme=='dark' {
+            color: $bg-color;
+          }
+        }
+
+        &:active {
+          background-color: $accent;
+        }
+      }
+    }
+  }
+}

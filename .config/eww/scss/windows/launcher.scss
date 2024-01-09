@@ -1,0 +1,37 @@
+.launcher {
+  min-width: 38rem;
+  min-height: 42rem;
+
+  .widget {
+    @include floating-widget;
+
+    .search {
+      margin: .5rem 1rem 1rem;
+      @include button;
+
+      .icon {
+        font-size: 1.2rem;
+        margin-left: 15px;
+      }
+
+      .input {
+        padding: 1rem;
+        font-weight: 500;
+        caret-color: $fg-color;
+      }
+    }
+
+    .app-list {
+      @include scrollbar;
+      margin: 0 .5rem;
+      .application {
+        @include application($dock: true);
+      }
+      .div {
+        padding: 1px;
+        border-radius: $radius;
+        background-color: transparentize($fg-color, 0.94);
+      }
+    }
+  }
+}

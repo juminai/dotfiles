@@ -1,0 +1,29 @@
+$theme: light;
+$assets: "assets/";
+
+$avatar: $assets + "eren.jpg";
+$bell: $assets + "bells.svg";
+
+$fg-color: $onSurface;
+$bg-color: $surface;
+$accent: $primary;
+$accent-gradient: linear-gradient(to right, $accent, lighten($accent, 15%));
+$accent-fg: $bg-color;
+
+$gaps: 8px;
+$transition: 250ms;
+$radius: 1rem;
+
+$hover: if($theme=='light', transparentize($accent, 0.6), transparentize($accent, 0.8));
+
+$widget-bg: if($theme=='light', transparentize($accent, 0.8), transparentize($accent, 0.9));
+
+$border-width: 1px;
+$border-color: if($theme=='light', rgba(black, 0.03), rgba(white, 0.03));
+$border: $border-width solid $border-color;
+
+$shadow: rgba($shadow, 0.5);
+$text-shadow: 2px 2px 2px $shadow;
+
+$button-radius: $radius*0.6;
+$button-bg: $widget-bg;

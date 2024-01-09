@@ -1,0 +1,17 @@
+(defwidget desktop []
+  (box
+    :class "desktop"
+    (box
+      :class "desktop info"
+      :orientation "v"
+      :space-evenly false
+      :halign "center"
+      :valign "center"
+      (clock)
+      (label 
+        :class "today" 
+        :text {formattime(EWW_TIME, "%A, %B %d", "America/Sao_Paulo")}
+      )
+    )
+  )
+)

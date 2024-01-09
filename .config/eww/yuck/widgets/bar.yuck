@@ -1,0 +1,233 @@
+(defwidget workspaces []
+  (button 
+    :class "workspaces"
+    (box
+      :space-evenly false
+      :spacing 7
+      (for workspace in workspaces
+        (eventbox
+          :cursor "pointer"
+          :halign "center"
+          :valign "center"
+          (button 
+            :onclick "scripts/hyprland workspace ${workspace.id}"
+            :class "indicator ${workspace.id == active.workspace ? "active" : arraylength(workspace.windows) > 0 ? "occupied" : "empty"}"
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget active-client []
+  (button
+    :class "active-client"
+    :onclick "eww open --toggle overview"
+    (box
+      :class "app" 
+      :space-evenly false 
+      :spacing 5 
+      (box 
+        :class "icon ${active.class}"
+        :style "background-image: url('${active.icon}')"
+        :visible {active.icon != "null"}
+        :halign "start"
+      )
+      (label 
+        :class "name"
+        :text {active.class != "null" ? active.class : "Desktop ${active.workspace}"}
+        :limit-width 20
+      )
+      (label :text {apps[0].id} :visible false)
+    )
+  )
+)
+
+(defwidget notification-bar []
+  (eventbox
+    :onhover "eww update notification_rev=true"
+    :onhoverlost "eww update notification_rev=false"
+    (button
+      :class "notification-bar"
+      :onclick "actions info-center"
+      :tooltip "${arraylength(notifications.notifications)} notifications"
+      :visible {arraylength(notifications.notifications) > 0}
+      (box
+        :space-evenly false
+        (revealer 
+          :transition "slideright"
+          :reveal {notification_rev || arraylength(notifications.popups) > 0}
+          :duration duration
+          (label 
+            :class "summary" 
+            :visible {arraylength(notifications.notifications) > 0}
+            :text {notifications.notifications[0].summary}
+            :limit-width 25
+          )
+        )
+        (label 
+          :class "icon"
+          :text ""
+        )
+      )
+    )
+  )
+)
+
+(defwidget date-bar []
+  (button 
+    :class "date-bar ${info-center_rev ? "active" : ""}" 
+    :onclick "actions info-center"
+    (box
+      :space-evenly false 
+      :spacing 5
+      (clock :name "clock-bar")
+      (label :text "-")
+      (label 
+        :class "today" 
+        :text {formattime(EWW_TIME, "%a, %b %d", "America/Sao_Paulo")}
+      )
+    )
+  )
+)
+
+(defwidget media-bar []
+  (eventbox
+    :onhover "eww update media-bar_rev=true"
+    :onhoverlost "eww update media-bar_rev=false"
+    :onscroll "echo {} | sed -e 's/up/next/g' -e 's/down/previous/g' | xargs playerctl -p ${mpris[0].name}"
+    (button
+      :class "media-bar"
+      :onclick "playerctl -p ${mpris[0].name} play-pause"
+      :visible {arraylength(mpris) > 0}
+      (box
+        :space-evenly false 
+        (label
+          :text {positions[mpris[0].name].position}
+          :visible false
+        )
+        (revealer
+          :transition "slideleft"
+          :duration duration
+          :reveal media-bar_rev
+          (label 
+            :class "title" 
+            :text "${mpris[0].artist} - ${mpris[0].title}"
+            :limit-width 40
+          )
+        )
+        (box 
+          :class "icon ${mpris[0].name}"
+          :style "background-image: url('${mpris[0].icon}')"
+        )
+      )
+    )
+  )
+)
+
+(defwidget utils-bar []
+  (box
+    :class "utils-bar"
+    (box
+      :space-evenly false
+      (revealer
+        :transition "slideleft"
+        :duration duration
+        :reveal utils-bar_rev
+        (box
+          :class "buttons"
+          :spacing 5
+          (utils-button 
+            :css "colorpicker"
+            :icon ""
+            :action "actions colorpicker"
+            :wait "300ms"
+            :tip "Color Picker"
+          )
+          (utils-button 
+            :css "screenshot"
+            :icon ""
+            :action "actions screenshot full"
+            :wait "300ms"
+            :tip "Screenshot Full"
+          )
+          (utils-button 
+            :css "screenshot"
+            :icon ""
+            :action "actions screenshot crop"
+            :wait "300ms"
+            :tip "Screenshot Crop"
+          )
+          (utils-button 
+            :css "update"
+            :icon ""
+            :action "actions update"
+            :wait "300ms"
+            :tip "Update"
+          )
+        )
+      )
+      (button 
+        :class "caret"
+        :onclick "eww update utils-bar_rev=${!utils-bar_rev}"
+        {utils-bar_rev ? "" : ""}
+      )
+    )
+  )
+)
+
+(defwidget dnd-indicator []
+  (box 
+    :class "dnd-indicator"
+    :visible {notifications.dnd}
+    {icons.bell[notifications.dnd]}
+  )
+)
+
+(defwidget nightlight-indicator []
+  (box 
+    :class "nightlight-indicator"
+    :visible {nightlight}
+    {icons.light[nightlight]}
+  )
+)
+
+(defwidget network-indicator []
+  (box 
+    :class "network-indicator"
+    {icons.network[network.status]}
+  )
+)
+
+(defwidget volume-indicator []
+  (eventbox
+    :onscroll "volume {}"
+    :cursor "pointer"
+    :valign "center"
+    (button
+      :class "volume-indicator ${audio.output.muted}"
+      :onclick "volume toggle"
+      :tooltip "${audio.output.volume}%"
+      {icons.volume[audio.output.muted]}
+    )
+  )
+)
+
+(defwidget mic-indicator []
+  (box 
+    :class "mic-indicator"
+    :visible {audio.input.muted}
+    {icons.microphone[audio.input.muted]}
+  )
+)
+
+(defwidget power-button []
+  (eventbox 
+    :cursor "pointer" 
+    (button 
+      :class "power-button"
+      :onclick "eww open --toggle powermenu"
+      ""
+    )
+  )
+)

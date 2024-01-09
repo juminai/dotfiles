@@ -1,0 +1,180 @@
+.menu {
+  .widget {
+    @include floating-widget();
+
+    .profile {
+      &.picture {
+        background-image: url($avatar);
+        @include image($size: 6rem);
+        border-radius: $radius;
+      }
+
+      &.info {
+        @include widget;
+
+        .name {
+          font-size: 1.5rem;
+          font-weight: bold;
+        }
+
+        .uptime {
+          font-size: 1.1rem;
+        }
+
+        .power {
+          @include powermenu-button($size: 1.5rem);
+        }
+      }
+    }
+
+    .utils {
+      @include widget;
+
+      button {
+        @include button($radius: 100%);
+        font-size: 1.6rem;
+      }
+
+      .theme,
+      .nightlight,
+      .powerprofile,
+      .dnd {
+
+        &.dark,
+        &.true,
+        &.power-saver {
+          @include button-active;
+        }
+      }
+    }
+
+    .system-info {
+      .progress {
+        @include widget;
+        padding: 0.5rem;
+
+        circular-progress {
+          background-color: transparentize($fg-color, 0.9);
+
+          &.ram,
+          &.disk,
+          &.temp,
+          &.cpu {
+            color: $accent;
+          }
+
+          &.cpu {
+            label {
+              margin-left: 1px;
+            }
+          }
+
+          &.temp {
+
+            label {
+              margin-left: 1px;
+            }
+          }
+        }
+      }
+
+      .icon {
+        font-size: 1.5rem;
+        padding: 1.5rem;
+      }
+    }
+
+    .network {
+      font-weight: 500;
+
+      .indicator {
+        @include widget;
+
+        .icon {
+          font-size: 1.2rem;
+
+          &.down {
+            color: transparentize($fg-color, 0.5)
+          }
+        }
+      }
+
+      .metric {
+        min-width: 6rem;
+        @include widget;
+
+        .icon {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .theme-selector {
+      @include button;
+      padding: 0 1rem;
+      font-weight: 500;
+      .icon {
+        font-size: 1.2rem
+      }
+
+      .caret {
+        min-width: 1rem;
+      }
+    }
+
+    .themes {
+      @include widget;
+      font-size: 1.1rem;
+
+      .separator {
+        min-width: 1px;
+        background-color: $hover;
+      }
+
+      button {
+        @include button($flat: true, $radius: $button-radius);
+        padding: .5rem;
+      }
+
+      .icon {
+        font-size: 1.2rem;
+      }
+    }
+
+    .sliders {
+      @include widget($padding: .5rem);
+
+      .icon {
+        font-size: 1.3rem;
+        min-width: 2rem;
+        padding: 0.5rem;
+      }
+
+      .true {
+        color: transparentize($fg-color, 0.5);
+      }
+
+      .scale {
+        @include slider($width: 0.8rem);
+        margin-left: 5px;
+      }
+
+      .launch {
+        @include button($flat: true);
+        font-size: 1.1rem;
+        margin: 0 .5rem;
+        padding: .5rem;
+      }
+    }
+
+    .media-list {
+      @include scrollbar;
+
+      .player {
+        @include player;
+        @include widget($padding: 0);
+        min-height: 14.5rem;
+      }
+    }
+  }
+}

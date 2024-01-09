@@ -1,0 +1,31 @@
+@import "/home/klyn/.cache/eww/colors/colors.scss";
+@import "scss/variables.scss";
+
+@import "scss/common/button.scss";
+@import "scss/common/floating-widget.scss";
+@import "scss/common/icon-image.scss";
+@import "scss/common/scrollbar.scss";
+@import "scss/common/slider.scss";
+@import "scss/common/tooltip.scss";
+@import "scss/common/unset.scss";
+@import "scss/common/widget.scss";
+
+@import "scss/widgets/application.scss";
+@import "scss/widgets/calendar.scss";
+@import "scss/widgets/date.scss";
+@import "scss/widgets/media.scss";
+@import "scss/widgets/notification.scss";
+@import "scss/widgets/notification-center.scss";
+@import "scss/widgets/separator.scss";
+
+@import "scss/windows/powermenu.scss";
+@import "scss/windows/bar.scss";
+@import "scss/windows/corners.scss";
+@import "scss/windows/desktop.scss";
+@import "scss/windows/dock.scss";
+@import "scss/windows/info-center.scss";
+@import "scss/windows/launcher.scss";
+@import "scss/windows/menu.scss";
+@import "scss/windows/notifications.scss";
+@import "scss/windows/overview.scss";
+@import "scss/windows/volume.scss";

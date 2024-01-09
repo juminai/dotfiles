@@ -1,0 +1,12 @@
+(defwidget overview []
+  (box 
+    :class "overview"
+    (box 
+      :class "widget"
+      :spacing 15
+      (for workspace in {workspaces}
+        (client :workspace workspace)
+      )
+    )
+  )
+)

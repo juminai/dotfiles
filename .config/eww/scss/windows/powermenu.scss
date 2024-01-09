@@ -1,0 +1,22 @@
+@mixin powermenu-button($size: 5rem) {
+
+  button{
+    @include button;
+    color: $accent;
+    padding: $size/2;
+    font-size: $size;
+  }
+
+  .poweroff {
+    color: $error;
+  }
+}
+
+.powermenu {
+  background-color: transparentize($bg-color, 0.7);
+
+  .widget {
+    @include floating-widget;
+    @include powermenu-button;
+  }
+}

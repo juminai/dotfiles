@@ -1,0 +1,44 @@
+@mixin notification-center {
+  min-width: 30rem;
+
+  .header {
+    font-size: 1.5rem;
+    margin: 0 .5rem .5rem;
+
+    .label {
+      font-weight: bold;
+    }
+
+    .clear {
+      @include button($flat: true);
+      padding: .6rem .8rem;
+      border-radius: 100%;
+      font-size: 1.2rem;
+    }
+  }
+
+  .notification-list {
+    @include scrollbar;
+
+    .notification {
+      @include notification;
+
+      .content {
+        @include widget;
+      }
+    }
+
+    .empty {
+      .icon {
+        font-family: 'Font Awesome 6 Duotone Solid';
+        font-size: 8rem;
+        color: $accent;
+      }
+
+      .label {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+    }
+  }
+}

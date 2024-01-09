@@ -1,0 +1,13 @@
+#!/bin/bash
+
+wallpaper() {
+  image=$(zenity --file-selection '~/Pictures/wallpapers')
+
+  if [[ $image == "" ]]; then
+    exit 0
+  fi
+
+  python $XDG_CONFIG_HOME/eww/scripts/python/material-colors.py --image "$image"
+}
+
+wallpaper

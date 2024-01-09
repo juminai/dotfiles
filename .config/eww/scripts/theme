@@ -1,0 +1,41 @@
+#!/bin/bash
+
+INTERFACE="org.gnome.desktop.interface"
+THEME=$(gsettings get $INTERFACE color-scheme | tr -d "'")
+SCSS="$XDG_CONFIG_HOME/eww/scss/variables.scss"
+
+set_dark() {
+  gsettings set $INTERFACE gtk-theme 'adw-gtk3-dark'
+  gsettings set $INTERFACE color-scheme 'prefer-dark'
+  gsettings set $INTERFACE icon-theme 'Papirus-Dark'
+}
+
+set_light() {
+  gsettings set $INTERFACE gtk-theme 'adw-gtk3'
+  gsettings set $INTERFACE color-scheme 'default'
+  gsettings set $INTERFACE icon-theme 'Papirus-Light'
+}
+
+toggle() {
+  if [[ $THEME == 'prefer-dark' ]]; then
+    sed '1s/dark/light/' -i $SCSS
+    eww update theme=light
+    set_light
+  else
+    sed '1s/light/dark/' -i $SCSS
+    eww update theme=dark
+    set_dark
+  fi
+  python $XDG_CONFIG_HOME/eww/scripts/python/material-colors.py --toggle
+}
+
+get() {
+  if [[ $THEME == prefer-dark ]]; then
+    echo dark
+  else
+    echo light
+  fi
+}
+
+if [[ $1 == 'toggle' ]]; then toggle; fi
+if [[ $1 == 'get' ]]; then get; fi

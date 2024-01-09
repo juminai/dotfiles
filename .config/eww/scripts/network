@@ -1,0 +1,11 @@
+#!/bin/bash
+
+INTERFACE=$(ip -o route show to default | awk '{print $5}')
+OPERSTATE=$(cat /sys/class/net/$INTERFACE/operstate)
+echo '{"name": "'$INTERFACE'", "status": "'$OPERSTATE'"}'
+
+ip monitor link | while read -r line; do
+  INTERFACE=$(ip -o -4 route show to default | awk '{print $5}')
+  OPERSTATE=$(cat /sys/class/net/$INTERFACE/operstate)
+  echo '{"name": "'$INTERFACE'", "status": "'$OPERSTATE'"}'
+done

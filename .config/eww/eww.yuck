@@ -1,0 +1,76 @@
+(include "yuck/widgets.yuck")
+(include "yuck/windows.yuck")
+(include "yuck/setup.yuck")
+
+(defpoll nightlight      :interval "10h" `scripts/nightlight get`)
+(defpoll powerprofile    :interval "10h" `scripts/powerprofile get`)
+(defpoll theme           :interval "10h" `scripts/theme get`)
+(defpoll date            :interval "5m"  `date +'{"day": "%d", "month": "%m", "year": "%Y"}'`)
+(defpoll uptime          :interval "1m"  `awk '{print $1 / 60}' /proc/uptime`)
+(defpoll colors          :interval "10h" `scripts/python/material-colors.py --type`)
+
+(deflisten audio         :initial "{}" `scripts/volume`)
+(deflisten pacman        :initial "{}" `scripts/pacman`)
+(deflisten network       :initial "{}" `scripts/network`)
+(deflisten workspaces    :initial "{}" `scripts/python/hyprland.py`)
+(deflisten weather       :initial "{}" `scripts/python/weather.py`)
+(deflisten notifications :initial "{}" `scripts/python/notifications.py`)
+(deflisten mpris         :initial "{}" `scripts/python/mpris.py`)
+(deflisten apps          :initial "{}" `scripts/python/apps.py`)
+  
+(defvar user             "klyn@arch")
+(defvar active           "{}")
+(defvar dock             "{}")
+(defvar positions        "{}")
+(defvar selected         "")
+(defvar popup            "")
+(defvar duration         "250ms")
+(defvar interval         "hourly")
+(defvar dock_rev         true)
+(defvar music_rev        false)
+(defvar media-bar_rev    false)
+(defvar utils-bar_rev    false)
+(defvar volume-bar_rev   false)
+(defvar volume_rev       false)
+(defvar menu_rev         false)
+(defvar info-center_rev  false)
+(defvar notification_rev false)
+(defvar themes_rev       false)
+(defvar icons '{
+    "volume": {
+      "true": "",
+      "false": ""
+    },
+    "microphone": {
+      "true": "",
+      "false": ""
+    },
+    "network": {
+      "up": "",
+      "down": ""
+    },
+    "power": {
+      "poweroff": "",
+      "reboot": "",
+      "suspend": "",
+      "exit": "" 
+    },
+    "bell": {
+      "true": "",
+      "false": ""
+    },
+    "light": {
+      "true": "",
+      "false": ""
+    },
+    "power-profile": {
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    },
+    "media": {
+      "true": "",
+      "false": ""
+    }
+  }'
+)

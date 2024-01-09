@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ -z $(eww active-windows | grep overview) ]]; then
+  eww open overview
+fi
+
+id=$(hyprctl activeworkspace -j | jq .id)
+
+while true; do
+  sleep 1
+  new_id=$(hyprctl activeworkspace -j | jq .id)
+
+  if [[ $id != $new_id ]]; then
+    id="$new_id"
+  else
+    if [[ $id == $(hyprctl activeworkspace -j | jq .id) ]]; then
+      if [[ -n $(eww active-windows | grep overview) ]]; then
+        eww close overview
+        exit
+      fi
+    fi
+  fi
+done

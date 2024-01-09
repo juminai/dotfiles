@@ -1,0 +1,36 @@
+#!/bin/bash
+
+DATE="$(date +'%d-%m-%y_%H:%M:%S')"
+DIR="$HOME/Pictures/screenshots"
+PIC="$DIR/$DATE.png"
+
+[ ! -d "$DIR" ] && mkdir -pv "$DIR"
+
+abort() {
+  notify-send -a "Warn" -i dialog-error "Screenshot" "aborted"
+  exit 1
+}
+
+notification() {
+  NOTIFY=$(notify-send -A open=Open -A delete=Delete -a Screenshot -i "$PIC" "Screenshot" "$PIC")
+  if [[ $NOTIFY == "open" ]]; then
+    viewnior $PIC
+  elif [[ $NOTIFY == "delete" ]]; then
+    rm -rf $PIC
+  else
+    exit 0
+  fi
+}
+
+case "$1" in
+full)
+  grim "$PIC" || abort
+  wl-copy <"$PIC"
+  notification
+  ;;
+crop)
+  grim -g "$(slurp)" "$PIC" || abort
+  wl-copy <"$PIC"
+  notification
+  ;;
+esac
