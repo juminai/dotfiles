@@ -14,6 +14,8 @@
 ![1](assets/main.png)
 ![2](assets/launcher.png)
 ![3](assets/overview.png)
+![3](assets/powermenu.png)
+![3](assets/desktop.png)
 
 #### thanks
 * [Aylur](https://github.com/Aylur/dotfiles)
