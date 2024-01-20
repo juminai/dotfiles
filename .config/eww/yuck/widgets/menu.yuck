@@ -75,7 +75,7 @@
         :orientation "v"
         :spacing 5
         (button
-          :onclick "material image"
+          :onclick "actions image"
           :timeout "300ms"
           (box
             (box
@@ -93,7 +93,7 @@
           )
         )
         (button
-          :onclick "material color"
+          :onclick "actions color"
           :timeout "300ms"
           (box
             (box
@@ -272,7 +272,8 @@
       )
       (system-progress
         :css "disk"
-        :tip "SSD ${round(EWW_DISK["/"].used_perc, 2)}%"
+        ;:tip "SSD ${round(EWW_DISK["/"].used_perc, 2)}%"
+        :tip "${round(EWW_DISK["/"].used / 1000000000, 1)}GB / ${round(EWW_DISK["/"].total / 1000000000, 1)}GB"
         :data {round(EWW_DISK["/"].used_perc, 0)}
         :icon ""
       )

@@ -4,14 +4,14 @@
     @include date($size: 10rem);
 
     label {
-      color: $bg-color;
+      color: $fg-color;
     }
 
     .clock {
       .timebox {
 
         box {
-          background-color: $bg-color;
+          background-color: $fg-color;
         }
       }
     }

@@ -61,6 +61,16 @@ overview() {
   fi
 }
 
+image() {
+  wallpaper & disown
+}
+
+from_color() {
+  color & disown
+}
+
+if [[ $1 == 'image' ]]; then image; fi
+if [[ $1 == 'color' ]]; then from_color; fi  
 if [[ $1 == "colorpicker" ]]; then picker; fi
 if [[ $1 == "screenshot" ]]; then screenshot $2; fi
 if [[ $1 == "update" ]]; then update; fi

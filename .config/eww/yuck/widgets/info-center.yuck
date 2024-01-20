@@ -74,14 +74,17 @@
           (grau)
         )
       )
-      (button
-        :class "icon"
-        :hexpand true
+      (overlay
+        :hexpand true 
+        :vexpand true
         :halign "end"
-        :onclick "eww update forecast_rev=${!forecast_rev}"
-        (label 
-          :class {weather.current.description}
-          :text {weather.current.icon}
+        (box :width 0)
+        (button
+          :class "current icon"
+          :style "background-image: url('${weather.current.icon_image}');"
+          :halign "center"
+          :valign "center"
+          :onclick "eww update forecast_rev=${!forecast_rev}"
         )
       )
     )

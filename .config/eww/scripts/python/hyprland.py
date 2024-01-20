@@ -28,6 +28,12 @@ def fix_name(window_class):
 
     if "inkscape" in window_class:
         window_class = "inkscape"
+        
+    if "nautilus" in window_class:
+        window_class = "nautilus"
+        
+    if "transmissionbt" in window_class:
+        window_class = "transmission"
     
     return window_class
 

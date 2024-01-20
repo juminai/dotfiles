@@ -24,6 +24,7 @@
         :halign "end" 
         :space-evenly false
         (media-bar)
+        (separator :visible {arraylength(mpris) > 0})
         (utils-bar)
         (separator)
         (eventbox

@@ -108,7 +108,7 @@ def setup(img):
     except shutil.SameFileError:
         pass
     os.system("eww reload")
-    #os.system("pkill -SIGUSR1 foot")
+    os.system("pkill -SIGUSR1 foot")
     os.system(f"gradience-cli apply -p '{COLORS_DIR}/colors-gradience.json' --gtk both")
     os.system(f"swww img {WALLPAPER_PATH} --transition-fps 75 --transition-type wipe --transition-duration 2")
 

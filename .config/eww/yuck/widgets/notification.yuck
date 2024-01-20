@@ -1,6 +1,7 @@
 (defwidget notification [notification floating]
   (eventbox
     :class "notification"
+    :onmiddleclick "scripts/notifications close ${notification.id}"
     :onhover {
       floating ? 
       "eww update popup=_'${notification.id}' && scripts/notifications pop ${notification.id}" : 

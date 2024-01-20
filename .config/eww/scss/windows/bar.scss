@@ -39,7 +39,8 @@
         &.active {
           background: $accent;
           min-width: 24px;
-          min-height: 12px
+          min-height: 14px;
+          border-radius: $radius/3;
         }
 
         &.empty {
