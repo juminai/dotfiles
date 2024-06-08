@@ -4,6 +4,7 @@
 - **Compositor:** Hyprland
 - **Terminal:** foot
 - **Widgets:** eww
+- **Colors:** [Material You](https://github.com/avanisubbiah/material-color-utilities-python)
 - **Fonts:**
   * **Icons:** Font Awesome 6 Pro
   * **UI:** San Francisco
