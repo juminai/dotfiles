@@ -13,13 +13,20 @@
         :orientation "v"
         :hexpand true
         :spacing 5
-        (label :class "name"  :text user :xalign 0)
+        (label :class "name" :text user :xalign 0)
         (box
           :class "uptime"
           :spacing 10
           :space-evenly false
           (label :text "")
           (label :text "${round(uptime, 0)} min")
+        )
+        (box
+          :class "uptime"
+          :spacing 10
+          :space-evenly false
+          (label :text "")
+          (label :text "${pacman.updates} updates" :xalign 0)
         )
       )
       (box
@@ -170,6 +177,7 @@
   (box 
     :class class 
     :space-evenly false
+    :hexpand true
     (eventbox 
       :cursor "pointer"
       :valign "center"
@@ -204,14 +212,30 @@
   (box 
     :class "sliders"
     :orientation "v"
-    (slider
-      :class "menu-volume"
-      :value {audio.output.volume}
-      :icon {icons.media[audio.output.muted]}
-      :action "volume"
-      :launch "pavucontrol &"
-      :muted {audio.output.muted}
+    :space-evenly false
+    (box
+      :space-evenly false
+      :hexpand true
+      (slider
+        :class "menu-volume"
+        :value {audio.output.volume}
+        :icon {icons.media[audio.output.muted]}
+        :action "volume"
+        :launch "pavucontrol &"
+        :muted {audio.output.muted}
+      )
+      (eventbox 
+        :cursor "pointer"
+        :valign "center"
+        :visible {arraylength(mpris) > 0}
+        (button 
+          :class "launch ${media-volume_rev ? "active" : ""}" 
+          :onclick "eww update media-volume_rev=${!media-volume_rev}"
+          ""
+        )
+      )
     )
+    (mpris-volume)
     (slider
       :class "menu-mic"
       :value {audio.input.volume}
@@ -219,6 +243,40 @@
       :action "volume mic"
       :launch "pavucontrol &"
       :muted {audio.input.muted}
+    )
+  )
+)
+
+(defvar media-volume_rev false)
+
+(defwidget mpris-volume []
+  (revealer
+    :reveal media-volume_rev
+    :transition "slidedown"
+    :duration duration
+    (box 
+      :class "media-volume"
+      :orientation "v"
+      :spacing 10
+      (for player in mpris
+        (box
+          :space-evenly false
+          :spacing 5
+          (box 
+            :class "player-icon" 
+            :style "background-image: url('${player.icon}')"
+          )
+          (scale
+            :class "player-scale"
+            :hexpand true
+            :value {player.volume}
+            :min 0 
+            :max 101
+            :onchange "echo 'scale=2; {}/100' | bc | xargs playerctl -p ${player.name} volume"
+          )
+          (label :class "percent" :text "${player.volume}%" :width 50)
+        )
+      )
     )
   )
 )

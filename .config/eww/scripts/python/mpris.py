@@ -10,7 +10,7 @@ import cairosvg
 import hashlib
 
 from io import BytesIO
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image
 from gi.repository import GLib
 from dbus.mainloop.glib import DBusGMainLoop
 from utils import get_themed_icon, MPRIS_DIR, update_eww
@@ -61,20 +61,15 @@ def get_artwork(artwork, title, player):
         else:
             artwork = artwork.replace("file://", "")
 
-        blur_img(artwork, save_path)
+        save_img(artwork, save_path)
     
     return save_path
 
 
-def blur_img(artwork, save_path):
+def save_img(artwork, save_path):
     try:
         image = Image.open(artwork)
-        if image.mode != "RGB":
-            image = image.convert("RGB")
-
-        blurred = image.filter(ImageFilter.GaussianBlur(radius=5))
-        blurred = ImageEnhance.Brightness(blurred).enhance(0.5)
-        blurred.save(save_path, format="PNG")
+        image.save(save_path, format="PNG")
     except FileNotFoundError:
         pass
 
@@ -82,7 +77,7 @@ def blur_img(artwork, save_path):
 def svg_to_png(svg_path, png_path):
     if not os.path.exists(png_path):
         cairosvg.svg2png(url=svg_path, write_to=png_path)
-        blur_img(png_path, png_path)
+        save_img(png_path, png_path)
 
     return png_path
 

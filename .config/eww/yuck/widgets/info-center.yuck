@@ -68,10 +68,9 @@
           :space-evenly false
           (label 
             :class "humidity"
-            :text "Humidity ${round(weather.current.humidity, 0)}"
+            :text "Humidity ${round(weather.current.humidity, 0)}%"
             :xalign 0
           )
-          (grau)
         )
       )
       (overlay

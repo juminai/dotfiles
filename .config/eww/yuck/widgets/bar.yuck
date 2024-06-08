@@ -50,7 +50,7 @@
     (button
       :class "notification-bar"
       :onclick "actions info-center"
-      :tooltip "${arraylength(notifications.notifications)} notifications"
+      :tooltip "${arraylength(notifications.notifications)} ${arraylength(notifications.notifications) == 1 ? "notification" : "notifications"}"
       :visible {arraylength(notifications.notifications) > 0}
       (box
         :space-evenly false

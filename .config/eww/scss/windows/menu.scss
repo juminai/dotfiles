@@ -10,7 +10,7 @@
       }
 
       &.info {
-        @include widget;
+        // @include widget;
 
         .name {
           font-size: 1.5rem;
@@ -113,6 +113,7 @@
       @include button;
       padding: 0 1rem;
       font-weight: 500;
+
       .icon {
         font-size: 1.2rem
       }
@@ -169,12 +170,37 @@
 
     .media-list {
       @include scrollbar;
-
       .player {
         @include player;
-        @include widget($padding: 0);
-        min-height: 14.5rem;
+        @include widget($padding: .5rem 1rem .5rem .5rem);
       }
     }
+  }
+}
+
+.media-volume {
+  @include widget($padding: .5rem .4rem .5rem 1rem);
+  margin: .5rem;
+
+  .player-scale {
+    @include slider($width: 0.4rem);
+    margin-left: 5px;
+  }
+
+  .player-icon {
+    @include image
+  }
+
+  .top {
+    font-size: 1.1rem;
+    .separator {
+      min-width: 1px;
+      background-color: $hover;
+    }
+  }
+
+  .percent {
+    font-weight: 500;
+
   }
 }

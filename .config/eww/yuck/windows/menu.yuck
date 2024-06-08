@@ -28,24 +28,23 @@
           (utils)
           (system-info)
         )
-        (scroll 
-          :class "media-list" 
-          :vscroll true
-          :visible {arraylength(mpris) > 0}
-          :height {
-            arraylength(mpris) == 1 ?
-            round(arraylength(mpris) * 215, 0) :
-            round(2 * 220, 0)
-          }
+        ; (scroll 
+        ;   :class "media-list" 
+        ;   :vscroll true
+        ;   :vexpand true
+        ;   :visible {arraylength(mpris) > 0}
+        ;   :height {round(arraylength(mpris) * 114, 0)}
           (box
+            :class "media-list" 
             :orientation "v"  
             :space-evenly false
             :spacing 10
+            :visible {mpris[0] != "{}" && arraylength(mpris) > 0}
             (for i in mpris
               (player :player i)
             )
           )
-        )
+        ;)
       )
     )
   )
