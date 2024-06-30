@@ -4,10 +4,12 @@
 import json
 import os
 import subprocess
+import sys
 
 from utils import load, update_eww, generate
 
 SIGNATURE = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+RUNTIME = os.environ.get("XDG_RUNTIME_DIR")
 
 apps = load("apps")
 
@@ -18,22 +20,20 @@ def run_command(command):
 
 
 def fix_name(window_class):
+    classes = {
+        "brave": "brave",
+        "telegram": "telegram",
+        "inkscape": "inkscape",
+        "nautilus": "nautilus",
+        "transmissionbt": "transmission",
+    }
+    
     window_class = window_class.lower()
-
-    if "brave" in window_class:
-        window_class = "brave"
-
-    if "telegram" in window_class:
-        window_class = "telegram"
-
-    if "inkscape" in window_class:
-        window_class = "inkscape"
-        
-    if "nautilus" in window_class:
-        window_class = "nautilus"
-        
-    if "transmissionbt" in window_class:
-        window_class = "transmission"
+    
+    for key, value in classes.items():
+        if key in window_class:
+            return value
+    return window_class
     
     return window_class
 
@@ -161,9 +161,9 @@ def update_dock():
 
 
 def monitor_socat():
-    socat = ["socat", "-U", "-", f"UNIX-CONNECT:/tmp/hypr/{SIGNATURE}/.socket2.sock"]
+    socat = ["socat", "-u", f"UNIX-CONNECT:{RUNTIME}/hypr/{SIGNATURE}/.socket2.sock", "-"]
     with subprocess.Popen(socat, stdout=subprocess.PIPE, text=True) as process:
-       for line in process.stdout:
+        for line in process.stdout:
             workspaces = get_workspaces()
 
             if line.startswith((

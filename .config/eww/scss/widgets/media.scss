@@ -22,15 +22,6 @@
   .progress {
     @include slider;
     margin: .5rem 0;
-
-    trough {
-      border: none;
-      background-color: transparentize(white, 0.85);
-    }
-
-    &:hover trough {
-      background-color: transparentize(white, 0.75);
-    }
   }
 
   .position {
@@ -51,7 +42,6 @@
   .controls {
     .loop,
     .shuffle {
-      color: $accent;
       font-size: 1.1rem;
     }
 
@@ -65,28 +55,15 @@
     }
 
     .disabled {
-      color: transparentize(white, 0.5);
+      color: transparentize($fg-color, 0.5);
     }
   }
-
 
   .volume {
     padding: 1rem;
 
     .volume-scale {
       @include slider;
-    }
-  }
-}
-
-@mixin slider-color($color) {
-
-  .progress trough,
-  .volume-scale trough {
-
-    highlight,
-    progress {
-      background-image: linear-gradient($color);
     }
   }
 }
