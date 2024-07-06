@@ -22,6 +22,8 @@ action() {
     /org/freedesktop/Notifications \
     org.freedesktop.Notifications.InvokeAction \
     uint32:$1 string:$2
+
+  eww update info-center_rev=false
 }
 
 clear_all() {

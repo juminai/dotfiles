@@ -2,7 +2,6 @@
   .artwork {
     @include image($cover: true);
     border-radius: $radius;
-    box-shadow: 1px 0 2px 0 $shadow;
     min-width: 6rem;
     min-height: 6rem;
   }

@@ -137,6 +137,11 @@
         (box
           :class "buttons"
           :spacing 5
+          (systray
+            :spacing 10
+            :icon-size 20
+            :prepend-new true
+          )
           (utils-button 
             :css "colorpicker"
             :icon ""
@@ -164,11 +169,6 @@
             :action "actions update"
             :wait "300ms"
             :tip "Update"
-          )
-          (systray
-            :spacing 10
-            :icon-size 20
-            :prepend-new true  
           )
         )
       )

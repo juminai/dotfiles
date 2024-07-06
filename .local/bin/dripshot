@@ -24,12 +24,12 @@ notification() {
 
 case "$1" in
 full)
-  grim "$PIC" || abort
+  grim "$PIC" || exit 1
   wl-copy <"$PIC"
   notification
   ;;
 crop)
-  grim -g "$(slurp)" "$PIC" || abort
+  grim -g "$(slurp)" "$PIC" || exit 1
   wl-copy <"$PIC"
   notification
   ;;

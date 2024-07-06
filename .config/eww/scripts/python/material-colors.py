@@ -56,7 +56,7 @@ def get_colors_from_img(image, scheme):
 
 
 def get_colors_from_color(color, scheme):
-    theme = themeFromSourceColor(color)
+    theme = themeFromSourceColor(argbFromHex(color))
     colorscheme = theme.get('schemes').get(scheme)
     
     return get_colors(colorscheme)

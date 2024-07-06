@@ -4,7 +4,7 @@
 
     .profile {
       &.picture {
-        background-image: url($avatar);
+        background-image: url('https://github.com/juminai.png');
         @include image($size: 6rem);
         border-radius: $radius;
       }
@@ -126,6 +126,7 @@
     .themes {
       @include widget;
       font-size: 1.1rem;
+      margin-top: 1rem;
 
       .separator {
         min-width: 1px;

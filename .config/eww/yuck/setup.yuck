@@ -40,6 +40,7 @@
 (defwindow menu
   :monitor 0
   :stacking "fg"
+  :namespace "eww_menu"
   :geometry (geometry 
               :y "42px" 
               :height "5px"

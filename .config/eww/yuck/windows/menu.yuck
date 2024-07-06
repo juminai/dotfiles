@@ -15,7 +15,6 @@
         (box
           :orientation "v"
           :space-evenly false
-          :spacing {themes_rev ? 15 : 0}
           (box
             :spacing 15
             (menu-network)
